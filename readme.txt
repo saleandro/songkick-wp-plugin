@@ -8,6 +8,6 @@ This plugin adds a widget to display upcoming events for a Songkick user on your
 
 == Installation ==
 
-1. Upload "songkick_concerts" folder to the "/wp-content/plugins/" directory
+1. Upload "songkick_concerts" to the "/wp-content/plugins/" directory
 1. Activate the plugin through the "Plugins" menu
-1. Add the widget to a sidebar, and configure the options. You'll need an API key. Apply for one here: http://www.songkick.com/developer
+1. Add the widget to a sidebar, and set your username and API key. Apply for a key here: http://www.songkick.com/developer

@@ -2,11 +2,29 @@
 
 /*
 Plugin Name: Songkick Concerts
-Version: 0.1
 Plugin URI: http://github.com/saleandro/songkick-wp-plugin
-Description: Show your upcoming concerts based on your Songkick profile! 
+Description: Widget to show your upcoming concerts based on your Songkick profile.
+Version: 0.2
 Author: Sabrina Leandro
 Author URI: http://github.com/saleandro
+
+*/
+
+/*
+    Copyright 2010 Sabrina Leandro (saleandro@yahoo.com)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License, version 2, as 
+    published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 if (!class_exists('WP_Http'))
@@ -90,6 +108,7 @@ function songkick_widget_init() {
 		$hide_if_empty = $options['hide_if_empty'];
 		$title         = ($options['title']) ? $options['title'] : $title;
 		$profile_title = _("See all concerts");
+		$logo          = $options['logo'];
 			
 		$sk =  new SongkickUserEvents($apikey, $username);
 		$sk->get_events();
@@ -122,7 +141,7 @@ function songkick_widget_init() {
 		echo "<p style='margin-top: 10px; margin-bottom: 0px; text-align: right'><a href='http://www.songkick.com/users/$username/'>";
 		echo _($profile_title)."</a></p>";
 		echo "<a style='margin: 0px' href='http://www.songkick.com/'>";
-		echo "<img style='margin: 0px' src='".site_url('/wp-content/plugins/songkick_concerts/songkick-logo.png')."' title='"._($powered_by_songkick)."' alt='"._($powered_by_songkick)."' /></a>";
+		echo "<img style='margin: 0px' src='".site_url('/wp-content/plugins/songkick_concerts/'.$logo)."' title='"._($powered_by_songkick)."' alt='"._($powered_by_songkick)."' /></a>";
 		echo $after_widget;
 	}
 
@@ -133,6 +152,7 @@ function songkick_widget_init() {
 				'title'    => '', 
 				'username' => '', 
 				'apikey'   => '', 
+				'logo'     => 'songkick-logo.png',
 				'hide_if_empty' => false, 
 			);
 		}
@@ -142,6 +162,7 @@ function songkick_widget_init() {
 			$options['username']       = strip_tags(stripslashes($_POST['songkick_username']));
 			$options['apikey']         = strip_tags(stripslashes($_POST['songkick_apikey']));
 			$options['hide_if_empty']  = ($_POST['songkick_hide_if_empty'] === 'on');
+			$options['logo']           = strip_tags(stripslashes($_POST['songkick_logo']));
 			update_option(SONGKICK_OPTIONS, $options);
 		}
 
@@ -149,18 +170,25 @@ function songkick_widget_init() {
 		$username = htmlspecialchars($options['username'], ENT_QUOTES);
 		$apikey   = htmlspecialchars($options['apikey'], ENT_QUOTES);
 		$hide_if_empty = ($options['hide_if_empty']) ? 'checked="checked"' : '';
+		$songkick_logo = htmlspecialchars($options['logo'], ENT_QUOTES);
 
-		echo '<p><label for="songkick_title">' . __('Title:');
+		echo '<p><label for="songkick_title">' . __('Title:') . '</label>';
 		echo '  <br><input class="widefat" id="songkick_title" name="songkick_title" type="text" value="'.$title.'" />';
-		echo '</label></p>';
-		echo '<p><label for="songkick_username">' . __('Username:');
+		echo '</p>';
+		echo '<p><label for="songkick_username">' . __('Username:') . '</label>';
 		echo '  <br><input class="widefat" id="songkick_username" name="songkick_username" type="text" value="'.$username.'" />';
-		echo '</label></p>';
-		echo '<p><label for="songkick_apikey">' . __('Songkick API Key:');
+		echo '</p>';
+		echo '<p><label for="songkick_apikey">' . __('Songkick API Key:') . '</label>';
 		echo '  <br><input class="widefat" id="songkick_apikey" name="songkick_apikey" type="text" value="'.$apikey.'" />';
-		echo '</label></p>';
+		echo '</p>';
+		echo '<p><label for="songkick_logo">' . __('Songkick logo') . '</label>';
+		echo '  <select id="songkick_logo" name="songkick_logo">';
+		echo '    <option value="songkick-logo.png" '.(($songkick_logo == 'songkick-logo.png') ? ' selected' : '').'>' . __('white background') . '</option>';
+		echo '    <option value="songkick-logo-black.png" '.(($songkick_logo == 'songkick-logo-black.png') ? ' selected' : '').'>' . __('black background') . '</option>';
+		echo '  </select>';
+		echo '</p>';
 		echo '<p><label for="songkick_hide_if_empty">';
-		echo '  <input id="songkick_hide_if_empty" name="songkick_hide_if_empty" type="checkbox"'.$hide_if_empty.' /> ';
+		echo '  <input id="songkick_hide_if_empty" name="songkick_hide_if_empty" type="checkbox" '.$hide_if_empty.' /> ';
 		echo    __('Hide if there are no events?');
 		echo '</label></p>';
 		echo '<input type="hidden" name="songkick_submit" value="submit" />';
