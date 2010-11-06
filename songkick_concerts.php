@@ -32,7 +32,9 @@ if (!class_exists('WP_Http'))
 	include_once(ABSPATH . WPINC . '/class-http.php');
 
 define('SONGKICK_OPTIONS', 'songkick-concerts');
+define('SONGKICK_CACHE', 'songkick-concerts-cache');
 define('SONGKICK_PROFILE_TITLE', 'See all concerts');
+define('SONGKICK_REFRESH_CACHE', 60 * 60);
 
 class SongkickUserEvents extends SongkickEvents {
 	public $username;
@@ -104,6 +106,11 @@ function songkick_widget_init() {
 		return $str;
 	}
 
+	function cache_expired($cached_results) {
+		if (!$cached_results || $cached_results == null) return true;
+		return (bool) ((time() - $cached_results['timestamp'] ) > SONGKICK_REFRESH_CACHE);
+	}
+
 	function songkick_widget($args) {
 		extract($args);
 		
@@ -121,9 +128,16 @@ function songkick_widget_init() {
 		$attendance    = $options['attendance'];
 		$number_of_events = $options['number_of_events'];
 		
-		$sk =  new SongkickUserEvents($apikey, $username, $attendance);
-		$events = $sk->get_upcoming_events($number_of_events);
-		
+		$cached_results = get_option(SONGKICK_CACHE);
+		if (cache_expired($cached_results)) {
+			$sk     = new SongkickUserEvents($apikey, $username, $attendance);
+			$events = $sk->get_upcoming_events($number_of_events);
+			$cached_results = array('events' => $events, 'timestamp'=> time());
+			update_option(SONGKICK_CACHE, $cached_results);
+		} else {
+			$events = $cached_results['events'];
+		}
+
 		if ($hide_if_empty && empty($events)) return;
 			
 		echo $before_widget . $before_title . $title . $after_title;
@@ -185,6 +199,7 @@ function songkick_widget_init() {
 			if ($limit > 50) $limit = 50;
 			$options['number_of_events'] = $limit;
 
+			update_option(SONGKICK_CACHE,   null);
 			update_option(SONGKICK_OPTIONS, $options);
 		}
 	

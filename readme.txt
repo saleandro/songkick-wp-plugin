@@ -1,8 +1,9 @@
-=== Songkick Concerts and Festivals ===
+=== Songkick Concerts ===
 Contributors: saleandro
 Tags: songkick, concerts, events, festivals, widget
 Requires at least: 2.8.2
 Tested up to: 3.0.1
+Stable tag: trunk
 
 This plugin adds a widget to display upcoming events for a Songkick user on your WordPress blog.
 
