@@ -1,4 +1,4 @@
-=== Songkick Concerts ===
+=== Songkick Concerts and Festivals ===
 Contributors: saleandro
 Tags: songkick, concerts, events, festivals, widget
 Requires at least: 2.8.2
@@ -16,6 +16,6 @@ You'll need a Songkick API key and a Songkick username. Apply for a key here: [S
 
 == Installation ==
 
-1. Upload the directory "songkick_concerts" to the "/wp-content/plugins/" directory
+1. Upload the directory "songkick_concerts_and_festivals" to the "/wp-content/plugins/" directory
 1. Activate the plugin through the "Plugins" menu
 1. Add the widget to a sidebar, and set your username and API key. Apply for a key here: http://www.songkick.com/developer
