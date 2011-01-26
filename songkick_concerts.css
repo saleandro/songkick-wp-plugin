@@ -1,23 +1,23 @@
-#songkick-concerts .profile-title {
+.songkick_widget .profile-title {
 	margin-top: 8px; 
 	margin-bottom: 10px; 
 	float: right;
 }
 
-#songkick-concerts .powered-by {
+.songkick_widget .powered-by {
 	margin: 0px;
 }
 
-#songkick-concerts .powered-by img {
+.songkick_widget .powered-by img {
 	margin: 0px;
 }
 
-#songkick-concerts .event-name {
+.songkick_widget .event-name {
 	display:block;
 	margin-left:44px;
 }
 
-#songkick-concerts ul {
+.songkick_widget ul {
 	border-bottom:1px solid #CCCCCC;
 	margin-bottom:5px;
 	margin-top: 10px;
@@ -25,11 +25,11 @@
 	list-style:none outside none;
 }
 
-#songkick-concerts li {
+.songkick_widget li {
 	margin-bottom: 10px;
 }
 
-#songkick-concerts .date-wrapper {
+.songkick_widget .date-wrapper {
 	font-size:0.5em;
 	font-weight:bold;
 	margin-right:10px;
@@ -41,12 +41,12 @@
 	line-height:1.1em;
 }
 
-#songkick-concerts .date-wrapper a {
+.songkick_widget .date-wrapper a {
 	text-decoration: none;
 	color:#878787;
 }
 
-#songkick-concerts .date-wrapper .day-name {
+.songkick_widget .date-wrapper .day-name {
 	background-color: #303030;
 	color:#FFFFFF;
 	display:block;
@@ -58,14 +58,14 @@
 	text-transform:uppercase;
 }
 
-#songkick-concerts .date-wrapper .day-month {
+.songkick_widget .date-wrapper .day-month {
 	border: 1px solid #878787;
 	display:block;
 	padding-bottom:4px;
 	padding-top:3px;
 }
 
-#songkick-concerts .date-wrapper .day {
+.songkick_widget .date-wrapper .day {
 	display:block;
 	font-size:1.8em;
 	margin: 0px;
@@ -73,14 +73,14 @@
 	padding: 0px;
 }
 
-#songkick-concerts .date-wrapper .month {
+.songkick_widget .date-wrapper .month {
 	font-size:1.4em;
 	margin: 0px;
 	margin-bottom: 2px;
 	padding: 0px;
 }
 
-#songkick-concerts .date-wrapper .year {
+.songkick_widget .date-wrapper .year {
 	font-size:1.6em;
 	line-height:8px;
 }
