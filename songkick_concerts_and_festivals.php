@@ -94,15 +94,41 @@ function songkick_widget_init() {
 
 	wp_enqueue_style('songkick_concerts_and_festivals', '/wp-content/plugins/songkick_concerts_and_festivals/songkick_concerts.css') ;
 
+    /**
+     * Construct an HTML block presenting a concert date.
+     * @param string $str_date The concert date.
+     * @param string $uri An URL to the concert date, which is to be linked.
+     * @param string $date_color (optional) An override background color, in the #rrggbb form.
+     * @return string The HTML block.
+     */
 	function date_to_html($str_date, $uri, $date_color) {
-		$override_color = (empty($date_color)) ? '' : 'style="background-color:'.$date_color.'"';
 		$date = strtotime($str_date);
+
+		/*
+		 * Localization (l10n) of the date.
+		 *
+		 * Translation of day and month is leveraged to strftime(), the output
+		 * of which is controlled by the locale. The locale must therefore be
+		 * set to a value based on WPLANG (WordPress localized language).
+		 */
+		// Save current locale setting.
+		// WARNING: setlocale() is known to not be thread-safe!
+		$saved_locale = setlocale(LC_TIME,"0");
+		setlocale(LC_TIME, WPLANG.'.UTF-8');
+		$day_name = strftime('%a', $date);
+		$month_name = strftime('%b', $date);
+		// Restore previous locale setting
+		setlocale(LC_TIME,$saved_locale);
+
+		// Construct the HTML block presenting the formatted date.
+		$override_color = (empty($date_color)) ? '' : 'style="background-color:'.$date_color.'"';
 		$str  = '<span class="date-wrapper"><a title="'.date('Y-m-d', $date).'" href="'.$uri.'">';
-		$str .= '  <span class="day-name" '.$override_color.'>'.date('D', $date).'</span>';
-		$str .= '  <span class="day-month"><span class="month">'.date('M', $date).'</span>';
+		$str .= '  <span class="day-name" '.$override_color.'>'.htmlentities($day_name, ENT_QUOTES, 'UTF-8').'</span>';
+		$str .= '  <span class="day-month"><span class="month">'.htmlentities($month_name, ENT_QUOTES, 'UTF-8').'</span>';
 		$str .= '  <span class="day">'.date('d', $date).'</span></span>';
 		$str .= '  <span class="year">'.date('Y', $date).'</span>';
 		$str .= '</a></span>';
+
 		return $str;
 	}
 
