@@ -33,8 +33,9 @@ if (!class_exists('WP_Http'))
 
 define('SONGKICK_OPTIONS', 'songkick-concerts');
 define('SONGKICK_CACHE', 'songkick-concerts-cache');
-define('SONGKICK_PROFILE_TITLE', 'See all concerts');
 define('SONGKICK_REFRESH_CACHE', 60 * 60);
+define('SONGKICK_TEXT_DOMAIN', 'songkick-concerts-and-festivals');
+define('SONGKICK_I18N_ENCODING', 'UTF-8');
 
 class SongkickUserEvents extends SongkickEvents {
 	public $username;
@@ -88,6 +89,19 @@ class SongkickEvents {
 	}
 }
 
+/**
+ * Global Initialization of the Songkick Plugin
+ */
+function songkick_plugin_init() {
+    // Load Plugin Text Domain for i18n
+    load_plugin_textdomain(SONGKICK_TEXT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+}
+
+add_action('init', 'songkick_plugin_init');
+
+/**
+ * Global Initialization of the Songkick Sidebar Widget
+ */
 function songkick_widget_init() {
 	if (!function_exists('register_sidebar_widget'))
 		return;
@@ -140,15 +154,15 @@ function songkick_widget_init() {
 	function songkick_widget($args) {
 		extract($args);
 
-		$powered_by_songkick = "Concerts by Songkick";
-		$title               = 'Concerts';
+		$powered_by_songkick = __('Concerts by Songkick', SONGKICK_TEXT_DOMAIN);
+		$title               = __('Concerts', SONGKICK_TEXT_DOMAIN);
 
 		$options       = get_option(SONGKICK_OPTIONS);
 		$username      = $options['username'];
 		$apikey        = $options['apikey'];
 		$hide_if_empty = $options['hide_if_empty'];
-		$title         = ($options['title']) ? $options['title'] : $title;
-		$profile_title = SONGKICK_PROFILE_TITLE;
+		$title         = ($options['title']) ? $options['title'] : htmlentities($title, ENT_QUOTES, SONGKICK_I18N_ENCODING);
+		$profile_title = __('See all concerts', SONGKICK_TEXT_DOMAIN);
 		$logo          = $options['logo'];
 		$date_color    = $options['date_color'];
 		$attendance    = $options['attendance'];
@@ -168,7 +182,7 @@ function songkick_widget_init() {
 
 		echo $before_widget . $before_title . $title . $after_title;
 		if (empty($events)) {
-			echo "<p>No events...</p>";
+			echo '<p>', htmlentities(__('No event...'), ENT_QUOTES, SONGKICK_I18N_ENCODING), '</p>';
 		} else {
 			echo "<ul>";
 			foreach($events as $event) {
@@ -183,17 +197,17 @@ function songkick_widget_init() {
 						$headliners[] = $performance->artist->displayName;
 					}
 					$event_name = join(', ', $headliners);
-					$venue_name = ' at '.$event->venue->displayName;
+					$venue_name = sprintf(__('at %1$s', SONGKICK_TEXT_DOMAIN), $event->venue->displayName);
 				}
 				echo "<li> $date <span class='event-name'><a href=\"$event->uri\">$event_name</a>";
-				echo "<span class='venue'>$venue_name</span></span><div style=\"clear:left\"></div></li>";
+				echo ' <span class="venue">', htmlentities($venue_name, ENT_QUOTES, SONGKICK_I18N_ENCODING), '</span></span><div style="clear:left"></div></li>';
 			}
 			echo "</ul>";
 		}
 		echo "<p class=\"profile-title\"><a href='http://www.songkick.com/users/$username/'>";
-		echo $profile_title."</a></p>";
+		echo htmlentities($profile_title, ENT_QUOTES, SONGKICK_I18N_ENCODING)."</a></p>";
 		echo "<a class='powered-by' href='http://www.songkick.com/'>";
-		echo "<img src='".site_url('/wp-content/plugins/songkick_concerts_and_festivals/'.$logo)."' title='".$powered_by_songkick."' alt='".$powered_by_songkick."' /></a>";
+		echo "<img src='".site_url('/wp-content/plugins/songkick_concerts_and_festivals/'.$logo)."' title='".htmlentities($powered_by_songkick, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' alt='".htmlentities($powered_by_songkick, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' /></a>";
 		echo $after_widget;
 	}
 
