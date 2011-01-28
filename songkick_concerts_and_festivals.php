@@ -93,8 +93,8 @@ class SongkickEvents {
  * Global Initialization of the Songkick Plugin
  */
 function songkick_plugin_init() {
-    // Load Plugin Text Domain for i18n
-    load_plugin_textdomain(SONGKICK_TEXT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	// Load Plugin Text Domain for i18n
+	load_plugin_textdomain(SONGKICK_TEXT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 
 add_action('init', 'songkick_plugin_init');
