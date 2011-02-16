@@ -21,7 +21,7 @@ msgid "See all concerts"
 msgstr "Voir tous les concerts"
 
 #: songkick_concerts_and_festivals.php:172
-msgid "No event..."
+msgid "No events..."
 msgstr "Aucun événement..."
 
 #: songkick_concerts_and_festivals.php:187

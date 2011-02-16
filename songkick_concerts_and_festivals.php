@@ -182,7 +182,7 @@ function songkick_widget_init() {
 
 		echo $before_widget . $before_title . $title . $after_title;
 		if (empty($events)) {
-			echo '<p>', htmlentities(__('No event...'), ENT_QUOTES, SONGKICK_I18N_ENCODING), '</p>';
+			echo '<p>', htmlentities(__('No events...'), ENT_QUOTES, SONGKICK_I18N_ENCODING), '</p>';
 		} else {
 			echo "<ul>";
 			foreach($events as $event) {
