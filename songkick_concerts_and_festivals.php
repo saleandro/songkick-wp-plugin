@@ -92,7 +92,7 @@ function songkick_widget_init() {
 	if (!function_exists('register_sidebar_widget'))
 		return;
 
-	wp_enqueue_style('songkick_concerts_and_festivals', '/wp-content/plugins/songkick_concerts_and_festivals/songkick_concerts.css') ;
+	wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css') ;
 
 	function date_to_html($str_date, $uri, $date_color) {
 		$override_color = (empty($date_color)) ? '' : 'style="background-color:'.$date_color.'"';
@@ -167,7 +167,7 @@ function songkick_widget_init() {
 		echo "<p class=\"profile-title\"><a href='http://www.songkick.com/users/$username/'>";
 		echo $profile_title."</a></p>";
 		echo "<a class='powered-by' href='http://www.songkick.com/'>";
-		echo "<img src='".site_url('/wp-content/plugins/songkick_concerts_and_festivals/'.$logo)."' title='".$powered_by_songkick."' alt='".$powered_by_songkick."' /></a>";
+		echo "<img src='".site_url('/wp-content/plugins/songkick-concerts-and-festivals/'.$logo)."' title='".$powered_by_songkick."' alt='".$powered_by_songkick."' /></a>";
 		echo $after_widget;
 	}
 

@@ -1,23 +1,23 @@
-#songkick-concerts .profile-title {
+#songkick-concerts-and-festivals .profile-title {
 	margin-top: 8px; 
 	margin-bottom: 10px; 
 	float: right;
 }
 
-#songkick-concerts .powered-by {
+#songkick-concerts-and-festivals .powered-by {
 	margin: 0px;
 }
 
-#songkick-concerts .powered-by img {
+#songkick-concerts-and-festivals .powered-by img {
 	margin: 0px;
 }
 
-#songkick-concerts .event-name {
+#songkick-concerts-and-festivals .event-name {
 	display:block;
 	margin-left:44px;
 }
 
-#main #songkick-concerts ul {
+#main #songkick-concerts-and-festivals ul {
 	border-bottom:1px solid #CCCCCC;
 	margin-bottom:5px;
 	margin-top: 10px;
@@ -25,11 +25,11 @@
 	list-style:none outside none;
 }
 
-#songkick-concerts li {
+#songkick-concerts-and-festivals li {
 	margin-bottom: 10px;
 }
 
-#songkick-concerts .date-wrapper {
+#songkick-concerts-and-festivals .date-wrapper {
 	font-size:0.5em;
 	font-weight:bold;
 	margin-right:10px;
@@ -41,12 +41,12 @@
 	line-height:1.1em;
 }
 
-#songkick-concerts .date-wrapper a {
+#songkick-concerts-and-festivals .date-wrapper a {
 	text-decoration: none;
 	color:#878787;
 }
 
-#songkick-concerts .date-wrapper .day-name {
+#songkick-concerts-and-festivals .date-wrapper .day-name {
 	background-color: #303030;
 	color:#FFFFFF;
 	display:block;
@@ -58,14 +58,14 @@
 	text-transform:uppercase;
 }
 
-#songkick-concerts .date-wrapper .day-month {
+#songkick-concerts-and-festivals .date-wrapper .day-month {
 	border: 1px solid #878787;
 	display:block;
 	padding-bottom:4px;
 	padding-top:3px;
 }
 
-#songkick-concerts .date-wrapper .day {
+#songkick-concerts-and-festivals .date-wrapper .day {
 	display:block;
 	font-size:1.8em;
 	margin: 0px;
@@ -73,14 +73,14 @@
 	padding: 0px;
 }
 
-#songkick-concerts .date-wrapper .month {
+#songkick-concerts-and-festivals .date-wrapper .month {
 	font-size:1.4em;
 	margin: 0px;
 	margin-bottom: 2px;
 	padding: 0px;
 }
 
-#songkick-concerts .date-wrapper .year {
+#songkick-concerts-and-festivals .date-wrapper .year {
 	font-size:1.6em;
 	line-height:8px;
 }
