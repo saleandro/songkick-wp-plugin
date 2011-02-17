@@ -4,7 +4,7 @@
 Plugin Name: Songkick Concerts and Festivals
 Plugin URI: http://github.com/saleandro/songkick-wp-plugin
 Description: Widget to show your upcoming concerts based on your Songkick profile.
-Version: 0.2
+Version: 0.3
 Author: Sabrina Leandro
 Author URI: http://github.com/saleandro
 License: GPL3

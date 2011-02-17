@@ -1,5 +1,5 @@
 === Songkick Concerts and Festivals ===
-Contributors: saleandro
+Contributors: saleandro, coox
 Tags: songkick, concerts, events, festivals, widget
 Requires at least: 2.8.2
 Tested up to: 3.0.1
