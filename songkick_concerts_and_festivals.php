@@ -3,8 +3,10 @@
 /*
 Plugin Name: Songkick Concerts and Festivals
 Plugin URI: http://github.com/saleandro/songkick-wp-plugin
-Description: Widget to show your upcoming concerts based on your Songkick profile.
-Version: 0.3
+Description: Widget to show your upcoming concerts based on your Songkick profile. It can display upcoming events for a user or an artist.
+For a user, simply put your username in the admin interface. For an artist, you should use the artist's Songkick id, as shown in the url for your artist page.
+For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
+Version: 0.4
 Author: Sabrina Leandro
 Author URI: http://github.com/saleandro
 License: GPL3
@@ -37,57 +39,8 @@ define('SONGKICK_REFRESH_CACHE', 60 * 60);
 define('SONGKICK_TEXT_DOMAIN', 'songkick-concerts-and-festivals');
 define('SONGKICK_I18N_ENCODING', 'UTF-8');
 
-class SongkickUserEvents extends SongkickEvents {
-	public $username;
-	public $apikey;
-
-	function SongkickUserEvents($apikey, $username, $attendance='all') {
-		$this->SongkickEvents($apikey);
-		$this->attendance = $attendance;
-		$this->username = $username;
-	}
-
-	protected function get_my_upcoming_events($per_page) {
-		$url      = "$this->apiurl/users/$this->username/events.json?apikey=$this->apikey&per_page=$per_page&attendance=$this->attendance";
-		$response = $this->fetch($url);
-		if ($response === false) {
-			// OMG something went wrong...
-		}
-		return $this->events_from_json($response);
-	}
-}
-
-class SongkickEvents {
-	public $apikey;
-	public $past_events = array();
-	public $upcoming_events = array();
-
-	function SongkickEvents($apikey) {
-		$this->apikey = $apikey;
-		$this->apiurl = 'http://api.songkick.com/api/3.0';
-	}
-
-	function get_upcoming_events($per_page=10) {
-		$this->upcoming_events = $this->get_my_upcoming_events($per_page);
-		return $this->upcoming_events;
-	}
-
-	protected function fetch($url) {
-		$http     = new WP_Http;
-		$response =  $http->request($url);
-		if ($response['response']['code'] != 200) return false;
-		return $response['body'];
-	}
-
-	protected function events_from_json($json) {
-		$json_docs = json_decode($json);
-		if ($json_docs->totalEntries === 0) {
-			return array();
-		} else {
-			return $json_docs->resultsPage->results->event;
-		}
-	}
-}
+require_once dirname(__FILE__) . '/songkick_user_events.php';
+require_once dirname(__FILE__) . '/songkick_artist_events.php';
 
 /**
  * Global Initialization of the Songkick Plugin
@@ -158,7 +111,13 @@ function songkick_widget_init() {
 		$title               = __('Concerts', SONGKICK_TEXT_DOMAIN);
 
 		$options       = get_option(SONGKICK_OPTIONS);
-		$username      = $options['username'];
+		if ($options['username']) {
+			$songkick_id      = $options['username'];
+			$songkick_id_type = 'user';
+		} else {
+			$songkick_id      = $options['songkick_id'];
+			$songkick_id_type = $options['songkick_id_type'];
+		}
 		$apikey        = $options['apikey'];
 		$hide_if_empty = $options['hide_if_empty'];
 		$title         = ($options['title']) ? $options['title'] : htmlentities($title, ENT_QUOTES, SONGKICK_I18N_ENCODING);
@@ -168,9 +127,13 @@ function songkick_widget_init() {
 		$attendance    = $options['attendance'];
 		$number_of_events = $options['number_of_events'];
 
+		if ($songkick_id_type == 'user')
+			$sk = new SongkickUserEvents($apikey, $songkick_id, $attendance);
+		else
+			$sk = new SongkickArtistEvents($apikey, $songkick_id);
+
 		$cached_results = get_option(SONGKICK_CACHE);
 		if (cache_expired($cached_results)) {
-			$sk     = new SongkickUserEvents($apikey, $username, $attendance);
 			$events = $sk->get_upcoming_events($number_of_events);
 			$cached_results = array('events' => $events, 'timestamp'=> time());
 			update_option(SONGKICK_CACHE, $cached_results);
@@ -187,24 +150,26 @@ function songkick_widget_init() {
 			echo "<ul>";
 			foreach($events as $event) {
 				$date = date_to_html($event->start->date, $event->uri, $date_color);
-
 				if (strtolower($event->type) == 'festival') {
 					$event_name = $event->displayName;
-					$venue_name = '';
+					$venue_name = $event->location->city;
 				} else {
 					$headliners = array();
 					foreach ($event->performance as $performance) {
-						$headliners[] = $performance->artist->displayName;
+						if ($performance->billing == 'headline')
+							$headliners[] = $performance->artist->displayName;
 					}
+					if (empty($headliners))
+						$headliners[]= $event->performance[0];
 					$event_name = join(', ', $headliners);
-					$venue_name = sprintf(__('at %1$s', SONGKICK_TEXT_DOMAIN), $event->venue->displayName);
+					$venue_name = $event->venue->displayName.', '.$event->location->city;
 				}
 				echo "<li> $date <span class='event-name'><a href=\"$event->uri\">$event_name</a>";
-				echo ' <span class="venue">', htmlentities($venue_name, ENT_QUOTES, SONGKICK_I18N_ENCODING), '</span></span><div style="clear:left"></div></li>';
+				echo '<br> <span class="venue">', htmlentities($venue_name, ENT_QUOTES, SONGKICK_I18N_ENCODING), '</span></span><div style="clear:left"></div></li>';
 			}
 			echo "</ul>";
 		}
-		echo "<p class=\"profile-title\"><a href='http://www.songkick.com/users/$username/'>";
+		echo '<p class="profile-title"><a href="'.$sk->profile_url().'">';
 		echo htmlentities($profile_title, ENT_QUOTES, SONGKICK_I18N_ENCODING)."</a></p>";
 		echo "<a class='powered-by' href='http://www.songkick.com/'>";
 		echo "<img src='".site_url('/wp-content/plugins/songkick-concerts-and-festivals/'.$logo)."' title='".htmlentities($powered_by_songkick, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' alt='".htmlentities($powered_by_songkick, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' /></a>";
@@ -216,7 +181,8 @@ function songkick_widget_init() {
 			if (!is_array($options)) {
 			$options = array(
 				'title'         => '',
-				'username'      => '',
+				'songkick_id'   => '',
+				'songkick_id_type' => 'user',
 				'apikey'        => '',
 				'logo'          => 'songkick-logo.png',
 				'date_color'    => '#303030',
@@ -227,8 +193,10 @@ function songkick_widget_init() {
 		}
 
 		if (current_user_can('manage_options') && $_POST['songkick_submit']) {
-			$options['title']          = strip_tags(stripslashes($_POST['songkick_title']));
-			$options['username']       = strip_tags(stripslashes($_POST['songkick_username']));
+			$options['title']            = strip_tags(stripslashes($_POST['songkick_title']));
+			$options['username']         = null;
+			$options['songkick_id']      = strip_tags(stripslashes($_POST['songkick_id']));
+			$options['songkick_id_type'] = strip_tags(stripslashes($_POST['songkick_id_type']));
 			$options['apikey']         = strip_tags(stripslashes($_POST['songkick_apikey']));
 			$options['logo']           = strip_tags(stripslashes($_POST['songkick_logo']));
 			$options['date_color']     = strip_tags(stripslashes($_POST['songkick_date_color']));
@@ -243,8 +211,14 @@ function songkick_widget_init() {
 			update_option(SONGKICK_OPTIONS, $options);
 		}
 
+		if ($options['username']) {
+			$songkick_id_type = 'user';
+			$songkick_id      = htmlspecialchars($options['username'], ENT_QUOTES);
+		} else {
+			$songkick_id_type = htmlspecialchars($options['songkick_id_type'], ENT_QUOTES);
+			$songkick_id      = htmlspecialchars($options['songkick_id'], ENT_QUOTES);
+		}
 		$title            = htmlspecialchars($options['title'], ENT_QUOTES);
-		$username         = htmlspecialchars($options['username'], ENT_QUOTES);
 		$apikey           = htmlspecialchars($options['apikey'], ENT_QUOTES);
 		$songkick_logo    = htmlspecialchars($options['logo'], ENT_QUOTES);
 		$date_color       = htmlspecialchars($options['date_color'], ENT_QUOTES);
@@ -252,8 +226,19 @@ function songkick_widget_init() {
 		$number_of_events = htmlspecialchars($options['number_of_events']);
 		$hide_if_empty    = ($options['hide_if_empty']) ? 'checked="checked"' : '';
 
-		echo '<p><label for="songkick_username">' . 'Username (required):' . '</label>';
-		echo '  <br><input class="widefat" id="songkick_username" name="songkick_username" type="text" value="'.$username.'" />';
+		echo '<p><select id="songkick_id_type" name="songkick_id_type">';
+		echo '    <option value="user" '.(($songkick_id_type == 'user') ? ' selected' : '').'>username</option>';
+		echo '    <option value="artist" '.(($songkick_id_type == 'artist') ? ' selected' : '').'>artist id</option>';
+		echo '  </select>';
+		echo '  <input size="15" id="songkick_id" name="songkick_id" type="text" value="'.$songkick_id.'" />';
+		echo '</p>';
+
+		echo '<p><label for="songkick_attendance">' . 'Attendance (for users only)' . '</label>';
+		echo '  <select id="songkick_attendance" name="songkick_attendance">';
+		echo '    <option value="all" '.(($attendance == 'all') ? ' selected' : '').'>all</option>';
+		echo '    <option value="im_going" '.(($attendance == 'im_going') ? ' selected' : '').'>I’m going</option>';
+		echo '    <option value="i_might_go" '.(($attendance == 'i_might_go') ? ' selected' : '').'>I might go</option>';
+		echo '  </select>';
 		echo '</p>';
 
 		echo '<p><label for="songkick_apikey">' . 'Songkick API Key  (required):' . '</label>';
@@ -262,14 +247,6 @@ function songkick_widget_init() {
 
 		echo '<p><label for="songkick_title">' . 'Title:' . '</label>';
 		echo '  <br><input class="widefat" id="songkick_title" name="songkick_title" type="text" value="'.$title.'" />';
-		echo '</p>';
-
-		echo '<p><label for="songkick_attendance">' . 'Attendance' . '</label>';
-		echo '  <select id="songkick_attendance" name="songkick_attendance">';
-		echo '    <option value="all" '.(($attendance == 'all') ? ' selected' : '').'>all</option>';
-		echo '    <option value="im_going" '.(($attendance == 'im_going') ? ' selected' : '').'>I’m going</option>';
-		echo '    <option value="i_might_go" '.(($attendance == 'i_might_go') ? ' selected' : '').'>I might go</option>';
-		echo '  </select>';
 		echo '</p>';
 
 		echo '<p><label for="songkick_number_of_events">Number of events to show (max 50)</label>';

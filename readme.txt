@@ -5,11 +5,14 @@ Requires at least: 2.8.2
 Tested up to: 3.0.1
 Stable tag: trunk
 
-This plugin adds a widget to display upcoming events for a Songkick user on your WordPress blog.
+This plugin adds a widget to display upcoming events for a Songkick user or artist on your WordPress blog.
 
 == Description ==
 
-This plugin adds a widget to display upcoming events for a Songkick user on your WordPress blog.
+This plugin adds a widget to display upcoming events for a Songkick user or artist on your WordPress blog.
+
+For a user, simply put your username in the admin interface. For an artist, you should use the artist's Songkick id, as shown in the url for your artist page.
+For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
 
 You'll need a Songkick API key and a Songkick username. Apply for a key here: [Songkick API docs](http://www.songkick.com/developer)
 
