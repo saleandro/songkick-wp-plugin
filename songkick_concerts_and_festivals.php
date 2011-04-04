@@ -96,7 +96,7 @@ function songkick_display_events($events, $profile_url, $date_color, $logo) {
 	if (empty($events)) {
 		echo '<p>', htmlentities(__('No events...'), ENT_QUOTES, SONGKICK_I18N_ENCODING), '</p>';
 	} else {
-		echo "<ul class=\"songkick_events\">";
+		echo "<ul class=\"songkick-events\">";
 		foreach($events as $event) {
 			$presentable_event = new SongkickPresentableEvent($event);
 			echo '<li>'.$presentable_event->to_html($date_color).'</li>';
@@ -119,7 +119,7 @@ function songkick_concerts_and_festivals_shortcode_handler() {
 	$sk = songkick_events_factory($options);
 	$events = $sk->get_upcoming_events($number_of_events);
 	
-	echo '<div class="songkick_events">';
+	echo '<div class="songkick-events">';
 	songkick_display_events($events, $sk->profile_url(), $date_color, $logo);
 	echo '</div>';
 }
@@ -149,7 +149,7 @@ function songkick_widget_init() {
 		if ($hide_if_empty && empty($events)) return;
 
 		echo $before_widget;
-		echo '<div class="songkick_events">';
+		echo '<div class="songkick-events">';
  		echo $before_title . songkick_title() . $after_title;
 		songkick_display_events($events, $sk->profile_url(), $date_color, $logo);
 		echo '</div>';
