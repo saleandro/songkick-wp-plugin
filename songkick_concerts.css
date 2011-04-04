@@ -1,23 +1,23 @@
-.songkick_widget .profile-title {
+.songkick_events .profile-title {
 	margin-top: 8px; 
 	margin-bottom: 10px; 
 	float: right;
 }
 
-.songkick_widget .powered-by {
+.songkick_events .powered-by {
 	margin: 0px;
 }
 
-.songkick_widget .powered-by img {
+.songkick_events .powered-by img {
 	margin: 0px;
 }
 
-.songkick_widget .event-name {
+.songkick_events .event-name {
 	display:block;
 	margin-left:44px;
 }
 
-#main .songkick_widget ul {
+#main .songkick_events ul {
 	border-bottom:1px solid #CCCCCC;
 	margin-bottom:5px;
 	margin-top: 10px;
@@ -25,12 +25,12 @@
 	list-style:none outside none;
 }
 
-.songkick_widget li {
+.songkick_events li {
 	margin-bottom: 10px;
 }
 
-.songkick_widget .date-wrapper {
-	font-size:0.5em;
+#main .songkick_events .date-wrapper {
+	font-size:7px;
 	font-weight:bold;
 	margin-right:10px;
 	color:#878787;
@@ -41,12 +41,12 @@
 	line-height:1.1em;
 }
 
-.songkick_widget .date-wrapper a {
+#main .songkick_events .date-wrapper a {
 	text-decoration: none;
 	color:#878787;
 }
 
-.songkick_widget .date-wrapper .day-name {
+#main .songkick_events .date-wrapper .day-name {
 	background-color: #303030;
 	color:#FFFFFF;
 	display:block;
@@ -58,14 +58,14 @@
 	text-transform:uppercase;
 }
 
-.songkick_widget .date-wrapper .day-month {
+#main .songkick_events .date-wrapper .day-month {
 	border: 1px solid #878787;
 	display:block;
 	padding-bottom:4px;
 	padding-top:3px;
 }
 
-.songkick_widget .date-wrapper .day {
+#main .songkick_events .date-wrapper .day {
 	display:block;
 	font-size:1.8em;
 	margin: 0px;
@@ -73,14 +73,14 @@
 	padding: 0px;
 }
 
-.songkick_widget .date-wrapper .month {
+#main .songkick_events .date-wrapper .month {
 	font-size:1.4em;
 	margin: 0px;
 	margin-bottom: 2px;
 	padding: 0px;
 }
 
-.songkick_widget .date-wrapper .year {
+#main .songkick_events .date-wrapper .year {
 	font-size:1.6em;
 	line-height:8px;
 }
