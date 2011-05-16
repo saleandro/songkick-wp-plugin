@@ -6,7 +6,7 @@ Plugin URI: http://github.com/saleandro/songkick-wp-plugin
 Description: Plugin to show your upcoming concerts based on your Songkick profile. It can display upcoming events for a user or an artist.
 For a user, simply put your username in the admin interface. For an artist, you should use the artist's Songkick id, as shown in the url for your artist page.
 For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
-Version: 0.6
+Version: 0.7
 Author: Sabrina Leandro
 Author URI: http://github.com/saleandro
 License: GPL3
@@ -29,6 +29,9 @@ License: GPL3
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+// For debugging: error_reporting(E_ALL);
+// For debugging: @ini_set('display_errors','On');
 
 if (!class_exists('WP_Http'))
 	include_once(ABSPATH . WPINC . '/class-http.php');

@@ -23,7 +23,11 @@ class SongkickEvents {
 	
 	protected function get_cached_results($key) {
 		$all_cache = get_option(SONGKICK_CACHE);
-		return $all_cache[$key];
+		if (isset($all_cache[$key]) && $all_cache[$key]) {
+			return $all_cache[$key];
+		} else {
+			return NULL;
+		}
 	}
 	
 	protected function get_uncached_upcoming_events($per_page) {
@@ -51,13 +55,13 @@ class SongkickEvents {
 	protected function fetch($url) {
 		$http     = new WP_Http;
 		$response =  $http->request($url);
-		if ($response['response']['code'] != 200) return false;
+		if (!is_array($response) || $response['response']['code'] != 200) return false;
 		return $response['body'];
 	}
 
 	protected function events_from_json($json) {
 		$json_docs = json_decode($json);
-		if ($json_docs->totalEntries === 0) {
+		if ($json_docs->resultsPage->totalEntries === 0) {
 			return array();
 		} else {
 			return $json_docs->resultsPage->results->event;
