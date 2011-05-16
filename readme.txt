@@ -25,3 +25,12 @@ You'll need a Songkick API key. Apply for a key here: [Songkick API docs](http:/
 1. Activate the plugin through the "Plugins" menu
 1. Go to the Settings page for Songkick and set your username/artist ID and API key. Apply for a key here: http://www.songkick.com/developer
 1. Add the widget to a sidebar or the shortcode anywhere in your blog.
+
+== Changelog ==
+
+= 0.6 =
+* Added shortcode
+
+= 0.7 =
+* Fixed some warnings
+* Made calendar date style inline
