@@ -23,7 +23,7 @@ function songkick_admin_settings() {
 		);
 	}
 
-	if (current_user_can('manage_options') && $_POST['songkick_submit']) {
+	if (current_user_can('manage_options') && isset($_POST['songkick_submit']) && $_POST['songkick_submit']) {
 		$options['username']         = null;
 		$options['songkick_id']      = strip_tags(stripslashes($_POST['songkick_id']));
 		$options['songkick_id_type'] = strip_tags(stripslashes($_POST['songkick_id_type']));
