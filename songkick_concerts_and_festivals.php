@@ -6,7 +6,7 @@ Plugin URI: http://github.com/saleandro/songkick-wp-plugin
 Description: Plugin to show your upcoming concerts based on your Songkick profile. It can display upcoming events for a user or an artist.
 For a user, simply put your username in the admin interface. For an artist, you should use the artist's Songkick id, as shown in the url for your artist page.
 For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
-Version: 0.7
+Version: 0.8
 Author: Sabrina Leandro
 Author URI: http://github.com/saleandro
 License: GPL3
@@ -96,19 +96,21 @@ function songkick_events_factory($options) {
 function songkick_display_events($events, $profile_url, $date_color, $logo) {
 	$profile_title = __('See all concerts', SONGKICK_TEXT_DOMAIN);
 	
+	$str = '';
 	if (empty($events)) {
-		echo '<p>', htmlentities(__('No events...'), ENT_QUOTES, SONGKICK_I18N_ENCODING), '</p>';
+		$str .= '<p>'. htmlentities(__('No events...'), ENT_QUOTES, SONGKICK_I18N_ENCODING). '</p>';
 	} else {
-		echo "<ul class=\"songkick-events\">";
+		$str .= "<ul class=\"songkick-events\">";
 		foreach($events as $event) {
 			$presentable_event = new SongkickPresentableEvent($event);
-			echo '<li>'.$presentable_event->to_html($date_color).'</li>';
+			$str .= '<li>'.$presentable_event->to_html($date_color).'</li>';
 		}
-		echo "</ul>";
+		$str .= "</ul>";
 	}
-	echo '<p class="profile-title"><a href="'.$profile_url.'">';
-	echo htmlentities($profile_title, ENT_QUOTES, SONGKICK_I18N_ENCODING)."</a></p>";
-	echo powered_by_songkick($logo);
+	$str .= '<p class="profile-title"><a href="'.$profile_url.'">';
+	$str .= htmlentities($profile_title, ENT_QUOTES, SONGKICK_I18N_ENCODING)."</a></p>";
+	$str .= powered_by_songkick($logo);
+	return $str;
 }
 
 function songkick_concerts_and_festivals_shortcode_handler() {
@@ -122,9 +124,10 @@ function songkick_concerts_and_festivals_shortcode_handler() {
 	$sk = songkick_events_factory($options);
 	$events = $sk->get_upcoming_events($number_of_events);
 	
-	echo '<div class="songkick-events">';
-	songkick_display_events($events, $sk->profile_url(), $date_color, $logo);
-	echo '</div>';
+	$str = '<div class="songkick-events">';
+	$str .= songkick_display_events($events, $sk->profile_url(), $date_color, $logo);
+	$str .= '</div>';
+	return $str;
 }
 
 
@@ -154,7 +157,7 @@ function songkick_widget_init() {
 		echo $before_widget;
 		echo '<div class="songkick-events">';
  		echo $before_title . songkick_title() . $after_title;
-		songkick_display_events($events, $sk->profile_url(), $date_color, $logo);
+		echo songkick_display_events($events, $sk->profile_url(), $date_color, $logo);
 		echo '</div>';
 		echo $after_widget;
 	}

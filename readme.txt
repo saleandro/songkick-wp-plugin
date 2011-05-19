@@ -34,3 +34,6 @@ You'll need a Songkick API key. Apply for a key here: [Songkick API docs](http:/
 = 0.7 =
 * Fixed some warnings
 * Made calendar date style inline
+
+= 0.8 =
+* Fixed bug where shortcode content would always display on top of other content
