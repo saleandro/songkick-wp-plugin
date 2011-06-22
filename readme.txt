@@ -17,11 +17,11 @@ Events can be displayed by adding the Songkick widget to your template, or by ad
 Go to the Settings page to configure the plugin. For a user, simply put your username in the admin interface. For an artist, you should use the artist's Songkick id, as shown in the url for your artist page. For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
 
 Different artist and user ids can be set using the shortcode function:
-* Users:   `[songkick_concerts_and_festivals songkick_id=your_username &nbsp;songkick_id_type=user]`
-* Artists: `[songkick_concerts_and_festivals songkick_id=your_artist_id songkick_id_type=artist]`
+
+*   Users:   `[songkick_concerts_and_festivals songkick_id=your_username songkick_id_type=user]`
+*   Artists: `[songkick_concerts_and_festivals songkick_id=your_artist_id songkick_id_type=artist]`
 
 You'll need a Songkick API key. Apply for a key here: [Songkick API docs](http://www.songkick.com/developer)
-
 
 == Installation ==
 
