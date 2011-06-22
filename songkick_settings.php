@@ -101,8 +101,14 @@ function songkick_admin_settings() {
 	echo '  </select>';
 	echo '<span class="description">For users only.</span>';
 	echo '</td></tr>';
+
+	echo '<tr><td colspan="2">You can also specify different user and artist ids when using the shortcode function. ';
+	echo ' <br>For users:&nbsp;&nbsp;<code>[songkick_concerts_and_festivals songkick_id=your_username &nbsp;songkick_id_type=user]</code>';
+	echo ' <br>For artists: <code>[songkick_concerts_and_festivals songkick_id=your_artist_id songkick_id_type=artist]</code>';
+	echo '</td></tr>';
+
 	echo '</table>';
-	
+
 	echo '<br><h3>Shortcode settings</h3>';
 	echo '<table class="form-table">';
 	echo '<tr><th><label for="songkick_shortcode_number_of_events">Number of events to show</label></th>';
