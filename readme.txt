@@ -3,7 +3,7 @@ Contributors: saleandro, coox
 Tags: songkick, concerts, events, festivals, widget
 Requires at least: 2.8.2, PHP 5 or higher
 Tested up to: 3.2.1
-Stable tag: trunk
+Stable tag: 0.9.1
 
 This plugin lets you display upcoming events for a Songkick user or artist on your WordPress blog.
 It can be used as a widget or shortcode.
