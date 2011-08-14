@@ -5,7 +5,7 @@ class SongkickEvents {
 	public $upcoming_events = array();
 
 	function SongkickEvents($apikey) {
-		$this->apikey = $apikey;
+		$this->apikey = trim($apikey);
 		$this->apiurl = 'http://api.songkick.com/api/3.0';
 	}
 
@@ -32,9 +32,6 @@ class SongkickEvents {
 	
 	protected function get_uncached_upcoming_events($per_page) {
 		$response = $this->fetch($this->url($per_page));
-		if ($response === false) {
-			// OMG something went wrong...
-		}
 		return $this->events_from_json($response);
 	}
 
@@ -55,7 +52,13 @@ class SongkickEvents {
 	protected function fetch($url) {
 		$http     = new WP_Http;
 		$response =  $http->request($url);
-		if (!is_array($response) || $response['response']['code'] != 200) return false;
+		if (is_wp_error($response)) {
+			throw new Exception('WP_Http/WP_Error message: '.$response->get_error_message());
+		} elseif (!is_array($response)) {
+			throw new Exception('WP_Http/Invalid response');
+		} elseif  ($response['response']['code'] != 200) {
+			throw new Exception('WP_Http error response: '.$response['response']['code']);
+		}
 		return $response['body'];
 	}
 

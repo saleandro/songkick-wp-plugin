@@ -1,8 +1,8 @@
 === Songkick Concerts and Festivals ===
 Contributors: saleandro, coox
 Tags: songkick, concerts, events, festivals, widget
-Requires at least: 2.8.2
-Tested up to: 3.0.1
+Requires at least: 2.8.2, PHP 5 or higher
+Tested up to: 3.2.1
 Stable tag: trunk
 
 This plugin lets you display upcoming events for a Songkick user or artist on your WordPress blog.
@@ -14,14 +14,55 @@ This plugin lets you display upcoming events for a Songkick user or artist on yo
 
 Events can be displayed by adding the Songkick widget to your template, or by adding the shortcode [songkick_concerts_and_festivals] anywhere in your blog.
 
-Go to the Settings page to configure the plugin. For a user, simply put your username in the admin interface. For an artist, you should use the artist's Songkick id, as shown in the url for your artist page. For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
+= Features =
 
-Different artist and user ids can be set using the shortcode function:
+*   Upcoming events for an artist
+*   Upcoming events for a user
+*   Widget or shortcode format
+*   Show events for multiple artists or users
+
+= Requirements =
+
+*   You'll need a Songkick API key. Apply for a key here: [Songkick API docs](http://www.songkick.com/developer)
+*   This plugin requires PHP 5
+
+= Settings =
+
+Go to the Settings page to configure the plugin. For a user, simply put your username in the admin interface. For an artist, you should use the artist’s Songkick id, as shown in the url for your artist page. For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
+
+= Widget =
+
+After configuring the plugin, go to the admin Widgets page and simply drag the widget into a sidebar.
+
+= Shortcode =
+
+After configuring the plugin, add the shortcode [songkick_concerts_and_festivals] in the content of any blog post. 
+
+When using a shortcode, you can set which artist or user you want to display events for, allowing you to show events for different users or artists:
 
 *   Users:   `[songkick_concerts_and_festivals songkick_id=your_username songkick_id_type=user]`
 *   Artists: `[songkick_concerts_and_festivals songkick_id=your_artist_id songkick_id_type=artist]`
 
-You'll need a Songkick API key. Apply for a key here: [Songkick API docs](http://www.songkick.com/developer)
+You can also set the 'no_calendar_style=true' to remove the calendar style from the event dates.
+ 
+= PHP code =
+
+You can also call the shortcode method directly in your PHP code:
+`<?php echo do_shortcode('[songkick_concerts_and_festivals]'); ?>`
+
+= Blogs using this plugin =
+
+*   [Big Boi](http://bigboi.com/tour/)
+*   [OK Go](http://www.okgo.net/shows/)
+*   [Haircut Records](http://haircutrecords.co.uk/site/)
+
+Know any others? Let me know!
+
+= Contribute =
+
+This is an open source project that I maintain during my spare time. I welcome contributions!
+
+The code lives on [Github](http://github.com/saleandro/songkick-wp-plugin). To send your contribution, fork my project, make your lovely changes, and send me a [pull request](http://help.github.com/send-pull-requests/). Thanks :)
 
 == Installation ==
 
@@ -30,18 +71,30 @@ You'll need a Songkick API key. Apply for a key here: [Songkick API docs](http:/
 1. Go to the Settings page for Songkick and set your username/artist ID and API key. Apply for a key here: http://www.songkick.com/developer
 1. Add the widget to a sidebar or the shortcode anywhere in your blog.
 
+== Screenshots ==
+
+1. Widget for a user.
+
 == Changelog ==
 
 = 0.6 =
-* Added shortcode
+* Added shortcode.
 
 = 0.7 =
-* Fixed some warnings
-* Made calendar date style inline
+* Fixed some warnings.
+* Made calendar date style inline.
 
 = 0.8 =
-* Fixed bug where shortcode content would always display on top of other content
+* Fixed bug where shortcode content would always display on top of other content.
 
 = 0.9 =
 * Default options can be overridden when calling shortcode function. This means you can use the plugin for different users and artists.
-See Songkick's admin settings for details.
+See Songkick’s admin settings for details.
+
+= 0.9.1 =
+
+* Refactored events and presentable event code.
+* Improved exception handling and error logging (thanks [Ethan](https://github.com/ezmiller/songkick-plugin-ethanmod)).
+* Improved documentation.
+* Added option to hide calendar style for dates (no_calendar_style=true)
+

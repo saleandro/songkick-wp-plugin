@@ -8,7 +8,7 @@ class SongkickUserEvents extends SongkickEvents {
 	function SongkickUserEvents($apikey, $username, $attendance='all') {
 		$this->SongkickEvents($apikey);
 		$this->attendance = $attendance;
-		$this->username = $username;
+		$this->username = trim($username);
 	}
 
 	function profile_url() {

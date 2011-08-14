@@ -7,7 +7,7 @@ class SongkickArtistEvents extends SongkickEvents {
 
 	function SongkickArtistEvents($apikey, $id) {
 		$this->SongkickEvents($apikey);
-		$this->id = $id;
+		$this->id = trim($id);
 	}
 
 	function profile_url() {

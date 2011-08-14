@@ -25,10 +25,10 @@ function songkick_admin_settings() {
 
 	if (current_user_can('manage_options') && isset($_POST['songkick_submit']) && $_POST['songkick_submit']) {
 		$options['username']         = null;
-		$options['songkick_id']      = strip_tags(stripslashes($_POST['songkick_id']));
+		$options['songkick_id']      = trim(strip_tags(stripslashes($_POST['songkick_id'])));
 		$options['songkick_id_type'] = strip_tags(stripslashes($_POST['songkick_id_type']));
 		$options['attendance']       = strip_tags(stripslashes($_POST['songkick_attendance']));
-		$options['apikey']           = strip_tags(stripslashes($_POST['songkick_apikey']));
+		$options['apikey']           = trim(strip_tags(stripslashes($_POST['songkick_apikey'])));
 
 		$options['title']          = strip_tags(stripslashes($_POST['songkick_title']));
 		$options['hide_if_empty']  = ($_POST['songkick_hide_if_empty'] === 'on');
