@@ -3,11 +3,11 @@
 /*
 Plugin Name: Songkick Concerts and Festivals
 Plugin URI: http://github.com/saleandro/songkick-wp-plugin
-Description: Plugin to show your upcoming concerts based on your Songkick profile. It can display upcoming events for a user or an artist.
+Description: Plugin to show upcoming concerts based on your Songkick profile. It can display upcoming events for a user or an artist.
 For a user, simply put your username in the admin interface. For an artist, you should use the artist's Songkick id, as shown in the url for your artist page.
 For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
 You can also specify different user and artist ids when using the shortcode function.
-Version: 0.9
+Version: 0.9.1
 Author: Sabrina Leandro
 Author URI: http://github.com/saleandro
 License: GPL3
@@ -31,21 +31,22 @@ License: GPL3
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// For debugging: error_reporting(E_ALL);
-// For debugging: @ini_set('display_errors','On');
+// For debugging: 
+// error_reporting(E_ALL);
+// if ( !defined('WP_DEBUG') )
+//     define('WP_DEBUG', true);
+// @ini_set('display_errors','On');
 
 if (!class_exists('WP_Http'))
 	include_once(ABSPATH . WPINC . '/class-http.php');
 
-define('SONGKICK_OPTIONS', 'songkick-concerts');
-define('SONGKICK_TEXT_DOMAIN', 'songkick-concerts-and-festivals');
+define('SONGKICK_OPTIONS',       'songkick-concerts');
+define('SONGKICK_TEXT_DOMAIN',   'songkick-concerts-and-festivals');
 define('SONGKICK_I18N_ENCODING', 'UTF-8');
-define('SONGKICK_CACHE', 'songkick-concerts-cache');
+define('SONGKICK_CACHE',         'songkick-concerts-cache');
 define('SONGKICK_REFRESH_CACHE', 60 * 60);
 
-require_once dirname(__FILE__) . '/songkick_user_events.php';
-require_once dirname(__FILE__) . '/songkick_artist_events.php';
-require_once dirname(__FILE__) . '/songkick_presentable_event.php';
+require_once dirname(__FILE__) . '/songkick_presentable_events.php';
 require_once dirname(__FILE__) . '/songkick_settings.php';
 
 /**
@@ -58,85 +59,56 @@ function songkick_plugin_init() {
 
 add_action('init', 'songkick_plugin_init');
 
-function songkick_option($key) {
-	$options = get_option(SONGKICK_OPTIONS);
-	return $options[$key];
-}
-
-function powered_by_songkick($logo) {
-	$text = __('Concerts by Songkick', SONGKICK_TEXT_DOMAIN);
-	$html  = "<a class='powered-by' href='http://www.songkick.com/'>";
-	$html .= "<img src='".site_url('/wp-content/plugins/songkick-concerts-and-festivals/'.$logo)."' title='".htmlentities($text, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' alt='".htmlentities($text, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' /></a>";
-	return $html;
-}
-
-function songkick_title() {
-	$default = __('Concerts', SONGKICK_TEXT_DOMAIN);
-	$title   = (songkick_option('title')) ? songkick_option('title') : htmlentities($title, ENT_QUOTES, SONGKICK_I18N_ENCODING);
-	return $title;
-}
-
-function songkick_events_factory($options) {
-	if ($options['username']) {
-		$songkick_id      = $options['username'];
-		$songkick_id_type = 'user';
-	} else {
-		$songkick_id      = $options['songkick_id'];
-		$songkick_id_type = $options['songkick_id_type'];
-	}
-	$apikey = $options['apikey'];
-	$attendance = $options['attendance'];
-
-	if ($songkick_id_type == 'user')
-		$sk = new SongkickUserEvents($apikey, $songkick_id, $attendance);
-	else
-		$sk = new SongkickArtistEvents($apikey, $songkick_id);
-	return $sk;
-}
-
-function songkick_display_events($events, $profile_url, $date_color, $logo) {
-	$profile_title = __('See all concerts', SONGKICK_TEXT_DOMAIN);
-
-	$str = '';
-	if (empty($events)) {
-		$str .= '<p>'. htmlentities(__('No events...'), ENT_QUOTES, SONGKICK_I18N_ENCODING). '</p>';
-	} else {
-		$str .= '<ul class="songkick-events">';
-		foreach($events as $event) {
-			$presentable_event = new SongkickPresentableEvent($event);
-			$str .= '<li>'.$presentable_event->to_html($date_color).'</li>';
-		}
-		$str .= '</ul>';
-	}
-	$str .= '<p class="profile-title"><a href="'.$profile_url.'">';
-	$str .= htmlentities($profile_title, ENT_QUOTES, SONGKICK_I18N_ENCODING)."</a></p>";
-	$str .= powered_by_songkick($logo);
-	return $str;
-}
-
 function songkick_concerts_and_festivals_shortcode_handler($options = null) {
-	wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css') ;
+	try {
+		wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css') ;
 
-	$default_options = get_option(SONGKICK_OPTIONS);
-	if (is_array($options)) {
-		$options = array_merge($default_options, $options);
-	} else {
-		$options = $default_options;
+		$default_options = get_option(SONGKICK_OPTIONS);
+		if (is_array($options)) {
+			$options = array_merge($default_options, $options);
+		} else {
+			$options = $default_options;
+		}
+		$options['logo']             = $options['shortcode_logo'];
+		$options['date_color']       = $options['shortcode_date_color'];
+		$options['number_of_events'] = $options['shortcode_number_of_events'];
+
+		$sk = new SongkickPresentableEvents($options);
+		$str = '<div class="songkick-events">';
+		$str .= $sk->to_html();
+		$str .= '</div>';
+		return $str;
+	} catch (Exception $e) {
+		$msg = 'Error on '.get_bloginfo('url').' while trying to display Songkick Concerts plugin: '. $e->getMessage();
+		error_log($msg, 0); 
 	}
-
-	$date_color       = $options['shortcode_date_color'];
-	$number_of_events = $options['shortcode_number_of_events'];
-	$logo             = $options['shortcode_logo'];
-
-	$sk = songkick_events_factory($options);
-	$events = $sk->get_upcoming_events($number_of_events);
-
-	$str = '<div class="songkick-events">';
-	$str .= songkick_display_events($events, $sk->profile_url(), $date_color, $logo);
-	$str .= '</div>';
-	return $str;
 }
 
+
+function songkick_gigography_shortcode_handler($options = null) {
+	try {
+		wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css') ;
+
+		$default_options = get_option(SONGKICK_OPTIONS);
+		if (is_array($options)) {
+			$options = array_merge($default_options, $options);
+		} else {
+			$options = $default_options;
+		}
+		$options['logo']             = $options['shortcode_logo'];
+		$options['date_color']       = $options['shortcode_date_color'];
+		$options['number_of_gigs']   = $options['shortcode_number_of_gigs'];
+
+		$sk = new SongkickPresentableGigography($options);
+		$str = '<div class="songkick-events">';
+		$str .= $sk->to_html();
+		$str .= '</div>';
+		return $str;
+	} catch (Exception $e) {
+		$msg = 'Error on '.get_bloginfo('url').' while trying to display Songkick Concerts plugin: '. $e->getMessage();
+		error_log($msg, 0); 
+	}
+}
 
 /**
  * Global Initialization of the Songkick Sidebar Widget
@@ -148,25 +120,33 @@ function songkick_widget_init() {
 	wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css') ;
 
 	function songkick_widget($args) {
-		extract($args);
+		try {
+			extract($args);
 
-		$options       = get_option(SONGKICK_OPTIONS);
-		$hide_if_empty = $options['hide_if_empty'];
-		$date_color    = $options['date_color'];
-		$number_of_events = $options['number_of_events'];
-		$logo             = $options['logo'];
+			$options       = get_option(SONGKICK_OPTIONS);
+			$hide_if_empty = $options['hide_if_empty'];
 
-		$sk = songkick_events_factory($options);
-		$events = $sk->get_upcoming_events($number_of_events);
+			$sk = new SongkickPresentableEvents($options);
 
-		if ($hide_if_empty && empty($events)) return;
+			if ($hide_if_empty && $sk->no_events()) return;
 
-		echo $before_widget;
-		echo '<div class="songkick-events">';
- 		echo $before_title . songkick_title() . $after_title;
-		echo songkick_display_events($events, $sk->profile_url(), $date_color, $logo);
-		echo '</div>';
-		echo $after_widget;
+			$options = get_option(SONGKICK_OPTIONS);
+			$title = $options['title'];
+			if (!$title || $title == '') {
+				$title = __('Concerts', SONGKICK_TEXT_DOMAIN);
+			}
+			$title = htmlentities($title, ENT_QUOTES, SONGKICK_I18N_ENCODING);
+
+			echo $before_widget;
+			echo '<div class="songkick-events">';
+	 		echo $before_title . $title . $after_title;
+			echo $sk->to_html();
+			echo '</div>';
+			echo $after_widget;
+		} catch (Exception $e) {
+			$msg = 'Error on '.get_bloginfo('url').' while trying to display Songkick Concerts plugin: '. $e->getMessage();
+			error_log($msg, 0); 
+		}
 	}
 
 	register_sidebar_widget(array('Songkick Concerts and Festivals', 'widgets'), 'songkick_widget');
@@ -178,6 +158,7 @@ function songkick_admin_menu() {
 	add_options_page('Songkick Concerts and Festivals', 'Songkick', 'administrator', 'songkick-concerts-and-festivals', 'songkick_admin_settings');
 }
 
+add_shortcode("songkick_gigography", "songkick_gigography_shortcode_handler");
 add_shortcode("songkick_concerts_and_festivals", "songkick_concerts_and_festivals_shortcode_handler");
 add_action('widgets_init', 'songkick_widget_init');
 
