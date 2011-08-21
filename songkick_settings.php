@@ -88,9 +88,10 @@ function songkick_admin_settings() {
 	echo '<td><select id="songkick_id_type" name="songkick_id_type">';
 	echo '    <option value="user" '.(($songkick_id_type == 'user') ? ' selected' : '').'>username</option>';
 	echo '    <option value="artist" '.(($songkick_id_type == 'artist') ? ' selected' : '').'>artist id</option>';
+	echo '    <option value="metro_area" '.(($songkick_id_type == 'metro_area') ? ' selected' : '').'>metro area id</option>';
 	echo '  </select>';
 	echo '  <input size="15" id="songkick_id" name="songkick_id" type="text" value="'.$songkick_id.'" />';
-	echo '<span class="description">Required. Either a username or an artist id.</span>';
+	echo '<span class="description">Required. Either a username, an artist id, or a metro area id.</span>';
 	echo '</td></tr>';
 
 	echo '<tr><th><label for="songkick_attendance">' . 'Attendance' . '</label></th>';
@@ -102,9 +103,10 @@ function songkick_admin_settings() {
 	echo '<span class="description">For users only.</span>';
 	echo '</td></tr>';
 
-	echo '<tr><td colspan="2">You can also specify different user and artist ids when using the shortcode function. ';
+	echo '<tr><td colspan="2">You can also specify different user, artist, or metro area ids when using the shortcode function. ';
 	echo ' <br>For users:&nbsp;&nbsp;<code>[songkick_concerts_and_festivals songkick_id=your_username &nbsp;songkick_id_type=user]</code>';
 	echo ' <br>For artists: <code>[songkick_concerts_and_festivals songkick_id=your_artist_id songkick_id_type=artist]</code>';
+	echo ' <br>For metro areas: <code>[songkick_concerts_and_festivals songkick_id=your_metro_area_id songkick_id_type=metro_area]</code>';
 	echo '</td></tr>';
 
 	echo '</table>';
