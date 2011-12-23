@@ -5,8 +5,9 @@ function songkick_widget_settings() {
 }
 
 function songkick_admin_settings() {
+  $max_number_events = 100;
 	$options = get_option(SONGKICK_OPTIONS);
-		if (!is_array($options)) {
+	if (!is_array($options)) {
 		$options = array(
 			'title'         => '',
 			'songkick_id'   => '',
@@ -35,13 +36,13 @@ function songkick_admin_settings() {
 		$options['logo']           = strip_tags(stripslashes($_POST['songkick_logo']));
 		$options['date_color']     = strip_tags(stripslashes($_POST['songkick_date_color']));
 		$limit = (int)$_POST['songkick_number_of_events'];
-		if ($limit > 50) $limit = 50;
+		if ($limit > $max_number_events) $limit = $max_number_events;
 		$options['number_of_events'] = $limit;
 
 		$options['shortcode_logo']           = strip_tags(stripslashes($_POST['shortcode_songkick_logo']));
 		$options['shortcode_date_color']     = strip_tags(stripslashes($_POST['shortcode_songkick_date_color']));
 		$limit = (int)$_POST['songkick_shortcode_number_of_events'];
-		if ($limit > 50) $limit = 50;
+		if ($limit > $max_number_events) $limit = $max_number_events;
 		$options['shortcode_number_of_events'] = $limit;
 
 		update_option(SONGKICK_CACHE,   null);
@@ -81,17 +82,18 @@ function songkick_admin_settings() {
 	echo '<table class="form-table">';
 	echo '<tr><th><label for="songkick_apikey">' . 'Songkick API Key' . '</label></th>';
 	echo '<td><input id="songkick_apikey" name="songkick_apikey" type="text" value="'.$apikey.'" />';
-	echo '<span class="description">Required. <a href="http://developer.songkick.com">Request one from Songkick</a></span>';
+	echo '<span class="description">Required &ndash; <a href="http://developer.songkick.com">Request one from Songkick</a></span>';
 	echo '</td></tr>';
 
 	echo '<tr><th><label for="songkick_id_type">' . 'Songkick ID' . '</label></th>';
 	echo '<td><select id="songkick_id_type" name="songkick_id_type">';
 	echo '    <option value="user" '.(($songkick_id_type == 'user') ? ' selected' : '').'>username</option>';
 	echo '    <option value="artist" '.(($songkick_id_type == 'artist') ? ' selected' : '').'>artist id</option>';
+	echo '    <option value="venue" '.(($songkick_id_type == 'venue') ? ' selected' : '').'>venue id</option>';
 	echo '    <option value="metro_area" '.(($songkick_id_type == 'metro_area') ? ' selected' : '').'>metro area id</option>';
 	echo '  </select>';
 	echo '  <input size="15" id="songkick_id" name="songkick_id" type="text" value="'.$songkick_id.'" />';
-	echo '<span class="description">Required. Either a username, an artist id, or a metro area id.</span>';
+	echo '<span class="description">Required</span>';
 	echo '</td></tr>';
 
 	echo '<tr><th><label for="songkick_attendance">' . 'Attendance' . '</label></th>';
@@ -100,12 +102,13 @@ function songkick_admin_settings() {
 	echo '    <option value="im_going" '.(($attendance == 'im_going') ? ' selected' : '').'>I’m going</option>';
 	echo '    <option value="i_might_go" '.(($attendance == 'i_might_go') ? ' selected' : '').'>I might go</option>';
 	echo '  </select>';
-	echo '<span class="description">For users only.</span>';
+	echo '<span class="description">For users only</span>';
 	echo '</td></tr>';
 
-	echo '<tr><td colspan="2">You can also specify different user, artist, or metro area ids when using the shortcode function. ';
+	echo '<tr><td colspan="2">You can also specify different user, artist, venue, or metro area ids when using the shortcode function. ';
 	echo ' <br>For users:&nbsp;&nbsp;<code>[songkick_concerts_and_festivals songkick_id=your_username &nbsp;songkick_id_type=user]</code>';
 	echo ' <br>For artists: <code>[songkick_concerts_and_festivals songkick_id=your_artist_id songkick_id_type=artist]</code>';
+	echo ' <br>For venues: <code>[songkick_concerts_and_festivals songkick_id=your_venue_id songkick_id_type=venue]</code>';
 	echo ' <br>For metro areas: <code>[songkick_concerts_and_festivals songkick_id=your_metro_area_id songkick_id_type=metro_area]</code>';
 	echo '</td></tr>';
 
@@ -115,7 +118,7 @@ function songkick_admin_settings() {
 	echo '<table class="form-table">';
 	echo '<tr><th><label for="songkick_shortcode_number_of_events">Number of events to show</label></th>';
 	echo '<td><input id="songkick_shortcode_number_of_events" name="songkick_shortcode_number_of_events" type="text" value="'.$shortcode_number_of_events.'" /> ';
-	echo '<span class="description"> Max. 50</span>';
+	echo '<span class="description"> Max. 100</span>';
 	echo '</td></tr>';
 	echo '<tr><th><label for="shortcode_songkick_logo">' . 'Songkick logo' . '</label></th>';
 	echo '<td><select id="shortcode_songkick_logo" name="shortcode_songkick_logo">';
@@ -139,7 +142,7 @@ function songkick_admin_settings() {
 
 	echo '<tr><th><label for="songkick_number_of_events">Number of events to show</label></th>';
 	echo '<td><input id="songkick_number_of_events" name="songkick_number_of_events" type="text" value="'.$number_of_events.'" /> ';
-	echo '<span class="description"> Max. 50</span>';
+	echo '<span class="description"> Max. 100</span>';
 	echo '</td></tr>';
 
 	echo '<tr><th><label for="songkick_hide_if_empty">Hide if there are no events?</label></th>';

@@ -4,6 +4,7 @@ require_once dirname(__FILE__) . '/songkick_presentable_event.php';
 require_once dirname(__FILE__) . '/songkick_user_events.php';
 require_once dirname(__FILE__) . '/songkick_artist_events.php';
 require_once dirname(__FILE__) . '/songkick_metro_area_events.php';
+require_once dirname(__FILE__) . '/songkick_venue_events.php';
 
 class SongkickPresentableEvents {
 	
@@ -28,6 +29,9 @@ class SongkickPresentableEvents {
 				break;
 			case 'metro_area':
 				$this->songkick_events = new SongkickMetroAreaEvents($apikey, $songkick_id);
+				break;
+			case 'venue':
+				$this->songkick_events = new SongkickVenueEvents($apikey, $songkick_id);
 				break;
 			default:
 				throw new Exception("Unknown songkick id type: $songkick_id_type");
