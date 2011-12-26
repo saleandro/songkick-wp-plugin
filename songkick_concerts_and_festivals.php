@@ -32,10 +32,10 @@ License: GPL3
 */
 
 // For debugging: 
-error_reporting(E_ALL);
-if ( !defined('WP_DEBUG') )
-    define('WP_DEBUG', true);
-@ini_set('display_errors','On');
+// error_reporting(E_ALL);
+// if ( !defined('WP_DEBUG') )
+//     define('WP_DEBUG', true);
+// @ini_set('display_errors','On');
 
 if (!class_exists('WP_Http'))
     include_once(ABSPATH . WPINC . '/class-http.php');

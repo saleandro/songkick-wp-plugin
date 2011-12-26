@@ -15,8 +15,8 @@ class SongkickUserEvents extends SongkickEvents {
         return "http://www.songkick.com/users/$this->username";
     }
 
-    protected function url($per_page) {
-        return "$this->apiurl/users/$this->username/events.json?apikey=$this->apikey&per_page=$per_page&attendance=$this->attendance";
+    protected function url($page, $per_page) {
+        return "$this->apiurl/users/$this->username/events.json?apikey=$this->apikey&per_page=$per_page&attendance=$this->attendance&page=$page";
     }
 }
 ?>

@@ -9,18 +9,17 @@ class SongkickEvents {
         $this->apiurl = 'http://api.songkick.com/api/3.0';
     }
 
-    function get_upcoming_events($per_page=10) {
-        $cached_results = $this->get_cached_results($this->url($per_page));
+    function get_upcoming_events($page=1, $per_page=10) {
+        $url = $this->url($page, $per_page);
+        $cached_results = $this->get_cached_results($url);
         if ($this->cache_expired($cached_results)) {
-            $events = $this->get_uncached_upcoming_events($per_page);
-            $cached_results = array('events' => $events, 'timestamp'=> time());
-            $this->set_cached_results($this->url($per_page), $cached_results);
-        } else {
-            $events = $cached_results['events'];
+            $cached_results = $this->get_uncached_upcoming_events($url);
+            $cached_results['timestamp'] = time();
+            $this->set_cached_results($url, $cached_results);
         }
-        return $events;
+        return $cached_results;
     }
-    
+
     protected function get_cached_results($key) {
         $all_cache = get_option(SONGKICK_CACHE);
         if (isset($all_cache[$key]) && $all_cache[$key]) {
@@ -29,9 +28,9 @@ class SongkickEvents {
             return NULL;
         }
     }
-    
-    protected function get_uncached_upcoming_events($per_page) {
-        $response = $this->fetch($this->url($per_page));
+
+    protected function get_uncached_upcoming_events($url) {
+        $response = $this->fetch($url);
         return $this->events_from_json($response);
     }
 
@@ -43,9 +42,9 @@ class SongkickEvents {
         $all_cache[$key] = $value;
         update_option(SONGKICK_CACHE, $all_cache);
     }
-    
+
     protected function cache_expired($cached_results) {
-        if (!$cached_results || $cached_results == null) return true;
+        if (!$cached_results || $cached_results == null || !isset($cached_results['total'])) return true;
         return (bool) ((time() - $cached_results['timestamp'] ) > SONGKICK_REFRESH_CACHE);
     }
 
@@ -64,11 +63,13 @@ class SongkickEvents {
 
     protected function events_from_json($json) {
         $json_docs = json_decode($json);
-        if ($json_docs->resultsPage->totalEntries === 0) {
-            return array();
+        $total     = $json_docs->resultsPage->totalEntries;
+        if ($total === 0) {
+            $events = array();
         } else {
-            return $json_docs->resultsPage->results->event;
+            $events = $json_docs->resultsPage->results->event;
         }
+        return array('events' => $events, 'total' => $total);
     }
 }
 

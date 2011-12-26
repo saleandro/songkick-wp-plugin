@@ -14,8 +14,8 @@ class SongkickMetroAreaEvents extends SongkickEvents {
         return "http://www.songkick.com/metro_areas/$this->id";
     }
 
-    protected function url($per_page){
-        return "$this->apiurl/metro_areas/$this->id/calendar.json?apikey=$this->apikey&per_page=$per_page";
+    protected function url($page, $per_page){
+        return "$this->apiurl/metro_areas/$this->id/calendar.json?apikey=$this->apikey&per_page=$per_page&page=$page";
     }
 }
 ?>

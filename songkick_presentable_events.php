@@ -9,7 +9,7 @@ require_once dirname(__FILE__) . '/songkick_venue_events.php';
 class SongkickPresentableEvents {
 
     function SongkickPresentableEvents($options) {
-        if ($options['username']) {
+        if ($options['username']) { // legacy
             $songkick_id      = $options['username'];
             $songkick_id_type = 'user';
         } else {
@@ -19,6 +19,10 @@ class SongkickPresentableEvents {
         $apikey           = $options['apikey'];
         $attendance       = $options['attendance'];
         $number_of_events = $options['number_of_events'];
+        if (!isset($options['page'])) $options['page'] = 1;
+        $page             = intval($options['page']);
+        if (!isset($options['show_pagination'])) $options['show_pagination'] = false;
+        $this->show_pagination = $options['show_pagination'];
 
         switch ($songkick_id_type) {
             case 'user':
@@ -37,7 +41,9 @@ class SongkickPresentableEvents {
                 throw new Exception("Unknown songkick id type: $songkick_id_type");
         }
 
-        $this->events     = $this->songkick_events->get_upcoming_events($number_of_events);
+        $results          = $this->songkick_events->get_upcoming_events($page, $number_of_events);
+        $this->events     = $results['events'];
+        $this->total      = $results['total'];
         $this->date_color = $options['date_color'];
         $this->logo       = $options['logo'];
         $this->no_calendar_style = false;
@@ -60,8 +66,12 @@ class SongkickPresentableEvents {
             }
             $str .= '</ul>';
         }
-        $str .= '<p class="profile-title"><a href="'.$this->songkick_events->profile_url().'">';
-        $str .= htmlentities($profile_title, ENT_QUOTES, SONGKICK_I18N_ENCODING)."</a></p>";
+        if ($this->show_pagination) {
+
+        } else {
+            $str .= '<p class="profile-title"><a href="'.$this->songkick_events->profile_url().'">';
+            $str .= htmlentities($profile_title, ENT_QUOTES, SONGKICK_I18N_ENCODING)."</a></p>";
+        }
         $str .= $this->powered_by_songkick($this->logo);
         return $str;
     }

@@ -14,8 +14,8 @@ class SongkickArtistEvents extends SongkickEvents {
         return "http://www.songkick.com/artists/$this->id";
     }
 
-    protected function url($per_page){
-        return "$this->apiurl/artists/$this->id/calendar.json?apikey=$this->apikey&per_page=$per_page";
+    protected function url($page, $per_page){
+        return "$this->apiurl/artists/$this->id/calendar.json?apikey=$this->apikey&per_page=$per_page&page=$page";
     }
 }
 ?>
