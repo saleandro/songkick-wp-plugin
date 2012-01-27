@@ -64,10 +64,10 @@ class SongkickEvents {
     protected function events_from_json($json) {
         $json_docs = json_decode($json);
         $total     = $json_docs->resultsPage->totalEntries;
-        if ($total === 0) {
-            $events = array();
-        } else {
+        if (isset($json_docs->resultsPage->results->event) && is_array($json_docs->resultsPage->results->event)) {
             $events = $json_docs->resultsPage->results->event;
+        } else {
+            $events = array();
         }
         return array('events' => $events, 'total' => $total);
     }

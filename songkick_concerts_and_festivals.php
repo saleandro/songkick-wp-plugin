@@ -31,11 +31,11 @@ License: GPL3
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// For debugging: 
-// error_reporting(E_ALL);
-// if ( !defined('WP_DEBUG') )
-//     define('WP_DEBUG', true);
-// @ini_set('display_errors','On');
+// For debugging:
+error_reporting(E_ALL);
+if ( !defined('WP_DEBUG') )
+    define('WP_DEBUG', true);
+@ini_set('display_errors','On');
 
 if (!class_exists('WP_Http'))
     include_once(ABSPATH . WPINC . '/class-http.php');
@@ -73,6 +73,10 @@ function songkick_concerts_and_festivals_shortcode_handler($options = null) {
         $options['date_color']       = $options['shortcode_date_color'];
         $options['number_of_events'] = $options['shortcode_number_of_events'];
 
+        if (!isset($options['show_pagination'])) $options['show_pagination'] = true;        
+        if ($options['show_pagination'] && isset($_GET['skp']))
+            $options['page'] = $_GET['skp'];
+
         $sk = new SongkickPresentableEvents($options);
         $str = '<div class="songkick-events">';
         $str .= $sk->to_html();
@@ -80,7 +84,7 @@ function songkick_concerts_and_festivals_shortcode_handler($options = null) {
         return $str;
     } catch (Exception $e) {
         $msg = 'Error on '.get_bloginfo('url').' while trying to display Songkick Concerts plugin: '. $e->getMessage();
-        error_log($msg, 0); 
+        error_log($msg, 0);
     }
 }
 
@@ -119,7 +123,7 @@ function songkick_widget_init() {
             echo $after_widget;
         } catch (Exception $e) {
             $msg = 'Error on '.get_bloginfo('url').' while trying to display Songkick Concerts plugin: '. $e->getMessage();
-            error_log($msg, 0); 
+            error_log($msg, 0);
         }
     }
 

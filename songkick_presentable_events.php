@@ -18,11 +18,12 @@ class SongkickPresentableEvents {
         }
         $apikey           = $options['apikey'];
         $attendance       = $options['attendance'];
-        $number_of_events = $options['number_of_events'];
-        if (!isset($options['page'])) $options['page'] = 1;
-        $page             = intval($options['page']);
+
+        $this->number_of_events = $options['number_of_events'];
         if (!isset($options['show_pagination'])) $options['show_pagination'] = false;
         $this->show_pagination = $options['show_pagination'];
+        if (!isset($options['page'])) $options['page'] = 1;
+        $this->page            = intval($options['page']);
 
         switch ($songkick_id_type) {
             case 'user':
@@ -41,7 +42,7 @@ class SongkickPresentableEvents {
                 throw new Exception("Unknown songkick id type: $songkick_id_type");
         }
 
-        $results          = $this->songkick_events->get_upcoming_events($page, $number_of_events);
+        $results          = $this->songkick_events->get_upcoming_events($this->page, $this->number_of_events);
         $this->events     = $results['events'];
         $this->total      = $results['total'];
         $this->date_color = $options['date_color'];
@@ -67,7 +68,17 @@ class SongkickPresentableEvents {
             $str .= '</ul>';
         }
         if ($this->show_pagination) {
-
+            $pages = ceil($this->total / $this->number_of_events);
+            if ($pages > 1) {
+                $str .= '<p class="pagination">';
+                foreach(range(1, $pages) as $page) {
+                    if ($page == $this->page)
+                        $str .= "$page | ";
+                    else
+                        $str .= "<a href=\"".$_SERVER['PHP_SELF']."?skp=$page\">$page</a> | ";
+                }
+                $str .= '</p>';
+            }
         } else {
             $str .= '<p class="profile-title"><a href="'.$this->songkick_events->profile_url().'">';
             $str .= htmlentities($profile_title, ENT_QUOTES, SONGKICK_I18N_ENCODING)."</a></p>";
