@@ -132,6 +132,7 @@ function songkick_widget_init() {
 }
 
 add_action('admin_menu', 'songkick_admin_menu');
+
 function songkick_admin_menu() {
     add_options_page('Songkick Concerts and Festivals', 'Songkick', 'administrator', 'songkick-concerts-and-festivals', 'songkick_admin_settings');
 }
