@@ -5,8 +5,7 @@ Requires at least: 2.8.2, PHP 5 or higher
 Tested up to: 3.3.1
 Stable tag: 0.9.3
 
-This plugin lets you display upcoming events for a Songkick user, artist, venue, or metro area on your WordPress blog.
-It can be used as a widget or shortcode.
+This plugin lets you display upcoming events for a Songkick user, artist, venue, or metro area on your WordPress blog, as a widget or shortcode.
 
 == Description ==
 
