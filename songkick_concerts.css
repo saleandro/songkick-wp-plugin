@@ -1,4 +1,4 @@
-div.songkick-events .profile-title {
+div.songkick-events .profile-title, .pagination {
     margin-top: 8px; 
     margin-bottom: 10px; 
     float: right;
@@ -30,4 +30,7 @@ div.songkick-events li {
     margin-bottom: 10px;
 }
 
+div.songkick-events .pagination {
+    width: auto;
+}
 

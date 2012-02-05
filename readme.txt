@@ -2,7 +2,7 @@
 Contributors: saleandro, coox
 Tags: songkick, concerts, events, festivals, widget
 Requires at least: 2.8.2, PHP 5 or higher
-Tested up to: 3.3
+Tested up to: 3.3.1
 Stable tag: 0.9.3
 
 This plugin lets you display upcoming events for a Songkick user, artist, venue, or metro area on your WordPress blog.
@@ -22,6 +22,8 @@ Events can be displayed by adding the Songkick widget to your template, or by ad
 *   Upcoming events for a metro area. A metro area is a city or a collection of cities that Songkick uses to notify users of concerts near them.
 *   Widget or shortcode format
 *   Show events for multiple artists, users, venues, or metro areas.
+*   Paginated list of events
+*   HTML markup with support for events as defined by [Schema.org](http://www.schema.org/)
 
 = Requirements =
 
@@ -112,3 +114,4 @@ See Songkick’s admin settings for details.
 
 * Support for displaying venue events.
 * Markup with support for events as defined by [Schema.org](http://www.schema.org/)
+* Paginated list of events for shortcode option.

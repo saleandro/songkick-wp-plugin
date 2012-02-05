@@ -14,7 +14,8 @@ function songkick_admin_settings() {
             'songkick_id_type' => 'user',
             'apikey'        => '',
             'attendance'    => 'all',
-            'hide_if_empty' => false,
+            'hide_if_empty'    => false,
+            'show_pagination'  => false,
             'number_of_events' => 10,
             'logo'          => 'songkick-logo.png',
             'date_color'    => '#303030',
@@ -39,6 +40,7 @@ function songkick_admin_settings() {
         if ($limit > $max_number_events) $limit = $max_number_events;
         $options['number_of_events'] = $limit;
 
+        $options['show_pagination']          = ($_POST['songkick_show_pagination'] === 'on');
         $options['shortcode_logo']           = strip_tags(stripslashes($_POST['shortcode_songkick_logo']));
         $options['shortcode_date_color']     = strip_tags(stripslashes($_POST['shortcode_songkick_date_color']));
         $limit = (int)$_POST['songkick_shortcode_number_of_events'];
@@ -60,7 +62,8 @@ function songkick_admin_settings() {
     $apikey           = htmlspecialchars($options['apikey'], ENT_QUOTES);
 
     $attendance       = htmlspecialchars($options['attendance']);
-    $hide_if_empty    = ($options['hide_if_empty']) ? 'checked="checked"' : '';
+    $hide_if_empty    = ($options['hide_if_empty'])   ? 'checked="checked"' : '';
+    $show_pagination  = ($options['show_pagination']) ? 'checked="checked"' : '';    
     $songkick_logo    = htmlspecialchars($options['logo'], ENT_QUOTES);
     $date_color       = htmlspecialchars($options['date_color'], ENT_QUOTES);
     $number_of_events = htmlspecialchars($options['number_of_events']);
@@ -131,6 +134,10 @@ function songkick_admin_settings() {
     echo '<tr><th><label for="shortcode_songkick_date_color">' . 'Background color for date:' . '</label></th>';
     echo '<td><input id="shortcode_songkick_date_color" name="shortcode_songkick_date_color" type="text" value="'.$shortcode_date_color.'" />';
     echo '</td></tr>';
+    echo '<tr><th><label for="songkick_show_pagination">Show pagination?</label></th>';
+    echo '<td><input id="songkick_show_pagination" name="songkick_show_pagination" type="checkbox" '.$show_pagination.' /> ';
+    echo '</td></tr>';
+    
     echo '</table>';
 
     echo '<br><h3>Widget settings</h3>';

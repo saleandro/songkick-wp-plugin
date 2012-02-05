@@ -32,10 +32,10 @@ License: GPL3
 */
 
 // For debugging:
-error_reporting(E_ALL);
-if ( !defined('WP_DEBUG') )
-    define('WP_DEBUG', true);
-@ini_set('display_errors','On');
+// error_reporting(E_ALL);
+// if ( !defined('WP_DEBUG') )
+//     define('WP_DEBUG', true);
+// @ini_set('display_errors','On');
 
 if (!class_exists('WP_Http'))
     include_once(ABSPATH . WPINC . '/class-http.php');
@@ -73,7 +73,7 @@ function songkick_concerts_and_festivals_shortcode_handler($options = null) {
         $options['date_color']       = $options['shortcode_date_color'];
         $options['number_of_events'] = $options['shortcode_number_of_events'];
 
-        if (!isset($options['show_pagination'])) $options['show_pagination'] = true;        
+        if (!isset($options['show_pagination'])) $options['show_pagination'] = false;        
         if ($options['show_pagination'] && isset($_GET['skp']))
             $options['page'] = $_GET['skp'];
 
@@ -103,24 +103,27 @@ function songkick_widget_init() {
 
             $options       = get_option(SONGKICK_OPTIONS);
             $hide_if_empty = $options['hide_if_empty'];
+            $options['show_pagination'] = false;
 
             $sk = new SongkickPresentableEvents($options);
 
-            if ($hide_if_empty && $sk->no_events()) return;
+            if ($hide_if_empty && $sk->no_events()) {
+                echo '';
+            } else {
+                $options = get_option(SONGKICK_OPTIONS);
+                $title = $options['title'];
+                if (!$title || $title == '') {
+                    $title = __('Concerts', SONGKICK_TEXT_DOMAIN);
+                }
+                $title = htmlentities($title, ENT_QUOTES, SONGKICK_I18N_ENCODING);
 
-            $options = get_option(SONGKICK_OPTIONS);
-            $title = $options['title'];
-            if (!$title || $title == '') {
-                $title = __('Concerts', SONGKICK_TEXT_DOMAIN);
+                echo $before_widget;
+                echo '<div class="songkick-events">';
+                echo $before_title . $title . $after_title;
+                echo $sk->to_html();
+                echo '</div>';
+                echo $after_widget;
             }
-            $title = htmlentities($title, ENT_QUOTES, SONGKICK_I18N_ENCODING);
-
-            echo $before_widget;
-            echo '<div class="songkick-events">';
-            echo $before_title . $title . $after_title;
-            echo $sk->to_html();
-            echo '</div>';
-            echo $after_widget;
         } catch (Exception $e) {
             $msg = 'Error on '.get_bloginfo('url').' while trying to display Songkick Concerts plugin: '. $e->getMessage();
             error_log($msg, 0);

@@ -70,14 +70,31 @@ class SongkickPresentableEvents {
         if ($this->show_pagination) {
             $pages = ceil($this->total / $this->number_of_events);
             if ($pages > 1) {
-                $str .= '<p class="pagination">';
-                foreach(range(1, $pages) as $page) {
-                    if ($page == $this->page)
-                        $str .= "$page | ";
-                    else
-                        $str .= "<a href=\"".$_SERVER['PHP_SELF']."?skp=$page\">$page</a> | ";
+                $min = max($this->page - 2, 2);
+                $max = min($this->page + 2, $pages-1);
+
+                $str .= '<div class="pagination">';
+                if (1 == $this->page)
+                    $str .= "« &nbsp;";
+                else {
+                    $prev = $this->page-1;
+                    $str .= "<a href=\"".$this->current_url("skp=$prev")."\" rel=\"prev\">«</a> &nbsp;";
                 }
-                $str .= '</p>';
+
+                $str .= $this->page_to_html(1);
+                if ($min > 2) $str .= "… &nbsp;";
+                for ($i=$min; $i<$max+1; $i++) {
+                    $str .=  $this->page_to_html($i);
+                }
+                if ($max < $pages-1) $str .= "… &nbsp;";
+                $str .= $this->page_to_html($pages);
+                if ($pages == $this->page)
+                    $str .= "» &nbsp;";
+                else {
+                    $next = $this->page+1;
+                    $str .= "<a href=\"".$this->current_url("skp=$next")."\" rel=\"next\">»</a> &nbsp;";
+                }
+                $str .= '</div>';
             }
         } else {
             $str .= '<p class="profile-title"><a href="'.$this->songkick_events->profile_url().'">';
@@ -86,9 +103,24 @@ class SongkickPresentableEvents {
         $str .= $this->powered_by_songkick($this->logo);
         return $str;
     }
-
+    
     function no_events() {
         return empty($this->events);
+    }
+
+    private function current_url($query_string) {
+        global $wp;
+        $current_url = remove_query_arg('skp', add_query_arg($wp->query_string, '', home_url($wp->request)));
+        return add_query_arg($query_string, '', $current_url);
+    }
+
+    private function page_to_html($page) {
+        $str = '';
+        if ($page == $this->page)
+            $str .= "$page &nbsp;";
+        else
+            $str .= "<a href=\"".$this->current_url("skp=$page")."\">$page</a> &nbsp;";
+        return $str;
     }
 
     private function powered_by_songkick($logo) {
