@@ -3,7 +3,7 @@ Contributors: saleandro, coox
 Tags: songkick, concerts, events, festivals, widget
 Requires at least: 2.8.2, PHP 5 or higher
 Tested up to: 3.3.1
-Stable tag: 0.9.3
+Stable tag: 0.9.3.1
 
 This plugin lets you display upcoming events for a Songkick user, artist, venue, or metro area on your WordPress blog, as a widget or shortcode.
 
@@ -31,9 +31,11 @@ Events can be displayed by adding the Songkick widget to your template, or by ad
 
 = Settings =
 
-Go to the Settings page to configure the plugin. For a user, simply put your username in the admin interface. For an artist, you should use the artist’s Songkick id, as shown in the url for your artist page. For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
-The same goes for metro areas: "http://www.songkick.com/metro_areas/123-city-name" has the id "123".
-And venues: "http://www.songkick.com/venues/123-venue-name" has the id "123".
+Go to the Settings page to configure the plugin. 
+*   For a user, simply put your username in the admin interface. 
+*   For an artist, you should use the artist’s Songkick id, as shown in the url for your artist page. For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
+*   The same goes for metro areas: "http://www.songkick.com/metro_areas/123-city-name" has the id "123".
+*   And venues: "http://www.songkick.com/venues/123-venue-name" has the id "123".
 
 = Widget =
 
