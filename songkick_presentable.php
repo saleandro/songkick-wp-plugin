@@ -16,11 +16,13 @@ class SongkickPresentable
     protected function render($template, $pass = array())
     {
         extract($pass);
+        $located_template = locate_template(array($template),false,false);
         ob_start();
-        if (locate_template($template, true, false) === '') {
+        if ( !empty($located_template) ) {
+            require($located_template);
+        } else {
             ob_start();
             require(dirname(__FILE__) . '/templates/' . $template);
-
         }
         return ob_get_clean();
     }
