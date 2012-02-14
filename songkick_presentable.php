@@ -48,13 +48,20 @@ class SongkickPresentable
         return (strtolower($event->type) == 'festival');
     }
 
-    protected function event_url($event)
+    protected function event_url($event,$page=false)
     {
         $options = get_option(SONGKICK_OPTIONS);
 
         if (!isset($options['show_events_locally']) || $options['show_events_locally'] == false) {
             return $event->uri;
         } else {
+            if ($page !== false ) {
+                global $wp;
+                $current_url = remove_query_arg(array('page','page_id','skp'), add_query_arg($wp->query_string, '', home_url($wp->request)));
+                $current_url = add_query_arg(sprintf("page_id=%s",$page),'',$current_url);
+                $current_url = $this->current_url(sprintf("event_id=%s", $this->event->id),$current_url);
+                return $current_url;
+            }
             return $this->current_url(sprintf("event_id=%s", $event->id));
         }
     }
