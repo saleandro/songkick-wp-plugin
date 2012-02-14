@@ -1,3 +1,4 @@
+<div class="songkick-events">
 <ul class="songkick-events">
 <?php foreach($this->events as $event) {
     $presentable_event = new SongkickPresentableEvent($event);
@@ -41,4 +42,5 @@ $max = min($this->page + 2, $pages-1);
     <?php echo htmlentities($profile_title, ENT_QUOTES, SONGKICK_I18N_ENCODING)."</a></p>"; ?>
     <?php
 }
-}
+}?>
+    </div>

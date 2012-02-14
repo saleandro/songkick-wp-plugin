@@ -34,28 +34,28 @@ div.songkick-events .pagination {
     width: auto;
 }
 
-div.songkick-event .event-name {
+div.songkick-single-event .event-name {
     display:block;
     margin-left:44px;
     font-size: 1.2em;
     font-weight: bold;
 }
 
-div.songkick-event .venue,
-div.songkick-event .line-up {
+div.songkick-single-event .venue,
+div.songkick-single-event .line-up {
     display: inline-block;
     vertical-align: top;
     margin-top: 12px;
     width: 140px;
 }
 
-div.songkick-event .venue h4,
-div.songkick-event .line-up h4 {
+div.songkick-single-event .venue h4,
+div.songkick-single-event .line-up h4 {
     margin: 0 !important;
     padding: 0 !important;
 }
 
-div.songkick-event .line-up ul {
+div.songkick-single-event .line-up ul {
     margin: 12px 0 0 0;
     padding: 0 0 0 0;
     list-style: none;
@@ -63,6 +63,6 @@ div.songkick-event .line-up ul {
     background-repeat: no-repeat;
 }
 
-div.songkick-event .line-up  li.headline {
+div.songkick-single-event .line-up  li.headline {
     font-weight: bold;
 }

@@ -10,6 +10,8 @@ require_once dirname(__FILE__) . '/songkick_venue_events.php';
 
 class SongkickPresentableEvents extends SongkickPresentable {
 
+    protected $widget_args = array(); // when we are a widget, we need these to render
+
     function SongkickPresentableEvents($options) {
         if ($options['username']) { // legacy
             $songkick_id      = $options['username'];
@@ -44,7 +46,12 @@ class SongkickPresentableEvents extends SongkickPresentable {
                 throw new Exception("Unknown songkick id type: $songkick_id_type");
         }
 
-        $this->template   = 'songkick-events.php';
+        if ( isset($options['is_widget']) && $options['is_widget'] == true ) {
+            $this->template = 'songkick-widget_events.php';
+            $this->widget_args = $options['_widget'];
+        } else {
+            $this->template   = 'songkick-events.php';
+        }
         $results          = $this->songkick_events->get_upcoming_events($this->page, $this->number_of_events);
         $this->events     = $results['events'];
         $this->total      = $results['total'];
