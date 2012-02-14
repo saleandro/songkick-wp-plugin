@@ -1,7 +1,10 @@
 <div class="songkick-single-event" itemscope itemtype="http://schema.org/Event">
     <?php echo $this->date_to_html($this->event, $this->no_calendar_style, $this->date_color); ?>
-    <span class="event-name"><a itemprop="url" href="<?php echo $this->event->uri; ?>"><span
-        itemprop="name"><?php echo $this->event_name($this->event); ?></span></a></span>
+    <span class="event-name">
+        <a itemprop="url" href="<?php echo $this->event->uri; ?>">
+            <span itemprop="name"><?php echo $this->event_name($this->event); ?></span>
+        </a>
+    </span>
 
     <div class="venue">
         <h4>Venue</h4>
