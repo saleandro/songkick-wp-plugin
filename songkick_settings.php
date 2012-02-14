@@ -19,6 +19,7 @@ function songkick_admin_settings() {
             'number_of_events' => 10,
             'logo'          => 'songkick-logo.png',
             'date_color'    => '#303030',
+            'show_events_locally' => false,
             'shortcode_number_of_events' => 50,
             'shortcode_logo'          => 'songkick-logo.png',
             'shortcode_date_color'    => '#303030'
@@ -40,6 +41,7 @@ function songkick_admin_settings() {
         if ($limit > $max_number_events) $limit = $max_number_events;
         $options['number_of_events'] = $limit;
 
+        $options['show_events_locally']       = ($_POST['songkick_show_events_locally'] === 'on');
         $options['show_pagination']          = ($_POST['songkick_show_pagination'] === 'on');
         $options['shortcode_logo']           = strip_tags(stripslashes($_POST['shortcode_songkick_logo']));
         $options['shortcode_date_color']     = strip_tags(stripslashes($_POST['shortcode_songkick_date_color']));
@@ -68,6 +70,7 @@ function songkick_admin_settings() {
     $date_color       = htmlspecialchars($options['date_color'], ENT_QUOTES);
     $number_of_events = htmlspecialchars($options['number_of_events']);
 
+    $show_events_locally         = ($options['show_events_locally'])   ? 'checked="checked"' : '';
     $shortcode_songkick_logo    = htmlspecialchars($options['shortcode_logo'], ENT_QUOTES);
     $shortcode_date_color       = htmlspecialchars($options['shortcode_date_color'], ENT_QUOTES);
     $shortcode_number_of_events = htmlspecialchars($options['shortcode_number_of_events']);
@@ -137,7 +140,9 @@ function songkick_admin_settings() {
     echo '<tr><th><label for="songkick_show_pagination">Show pagination?</label></th>';
     echo '<td><input id="songkick_show_pagination" name="songkick_show_pagination" type="checkbox" '.$show_pagination.' /> ';
     echo '</td></tr>';
-    
+    echo '<tr><th><label for="songkick_show_pagination">Show Events Locally?</label></th>';
+    echo '<td><input id="songkick_show_events_locally" name="songkick_show_events_locally" type="checkbox" '.$show_events_locally.' /> ';
+    echo '</td></tr>';
     echo '</table>';
 
     echo '<br><h3>Widget settings</h3>';
