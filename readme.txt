@@ -22,6 +22,8 @@ Events can be displayed by adding the Songkick widget to your template, or by ad
 *   Widget or shortcode format
 *   Show events for multiple artists, users, venues, or metro areas.
 *   Paginated list of events
+*   Link to event locally or on Songkick
+*   Can use custom templates from your theme
 *   HTML markup with support for events as defined by [Schema.org](http://www.schema.org/)
 
 = Requirements =
@@ -58,6 +60,10 @@ You can also set the 'no_calendar_style=true' to remove the calendar style from 
 
 You can also call the shortcode method directly in your PHP code:
 `<?php echo do_shortcode('[songkick_concerts_and_festivals]'); ?>`
+
+= Customize Templates =
+
+Copy the templates from the plugin template directory to your themes root directory. Modify to match your sites look and feel exactly.
 
 = Blogs using this plugin =
 
