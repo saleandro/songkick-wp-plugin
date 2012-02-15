@@ -35,8 +35,6 @@ class SongkickPresentableSingleEvent extends SongkickPresentable
         } else {
             $str .= $this->render($this->template, compact('no_calendar_style', 'date_color'));
         }
-
-        $str .= $this->powered_by_songkick($this->logo);
         return $str;
     }
 

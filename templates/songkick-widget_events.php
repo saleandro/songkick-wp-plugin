@@ -23,4 +23,5 @@ echo $before_title . $title . $after_title;
     <?php } // end foreach ?>
 </ul>
 </div>
+<?php echo $this->powered_by_songkick($this->logo); ?>
 <?php echo $after_widget; ?>

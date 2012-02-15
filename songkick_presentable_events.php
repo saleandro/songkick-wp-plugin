@@ -75,8 +75,6 @@ class SongkickPresentableEvents extends SongkickPresentable
         } else {
             $str .= $this->render($this->template, array());
         }
-
-        $str .= $this->powered_by_songkick($this->logo);
         return $str;
     }
 

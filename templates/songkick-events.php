@@ -44,3 +44,4 @@
         }
     }?>
 </div>
+<?php echo $this->powered_by_songkick($this->logo); ?>
