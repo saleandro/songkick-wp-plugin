@@ -57,7 +57,8 @@ class SongkickPresentable
         } else {
             if ($page !== false ) {
                 global $wp;
-                $current_url = remove_query_arg(array('page','page_id','skp'), add_query_arg($wp->query_string, '', home_url($wp->request)));
+                //$current_url = remove_query_arg(array('page','page_id','skp'), add_query_arg($wp->query_string, '', home_url($wp->request)));
+                $current_url = site_url();
                 $current_url = add_query_arg(sprintf("page_id=%s",$page),'',$current_url);
                 $current_url = $this->current_url(sprintf("event_id=%s", $this->event->id),$current_url);
                 return $current_url;
