@@ -14,6 +14,7 @@ function songkick_admin_settings() {
             'songkick_id_type' => 'user',
             'apikey'        => '',
             'attendance'    => 'all',
+            'gigography'       => false,
             'hide_if_empty'    => false,
             'show_pagination'  => false,
             'number_of_events' => 10,
@@ -34,6 +35,7 @@ function songkick_admin_settings() {
 
         $options['title']          = strip_tags(stripslashes($_POST['songkick_title']));
         $options['hide_if_empty']  = ($_POST['songkick_hide_if_empty'] === 'on');
+        $options['gigography']     = ($_POST['songkick_gigography'] === 'on');
         $options['logo']           = strip_tags(stripslashes($_POST['songkick_logo']));
         $options['date_color']     = strip_tags(stripslashes($_POST['songkick_date_color']));
         $limit = (int)$_POST['songkick_number_of_events'];
@@ -62,8 +64,9 @@ function songkick_admin_settings() {
     $apikey           = htmlspecialchars($options['apikey'], ENT_QUOTES);
 
     $attendance       = htmlspecialchars($options['attendance']);
+    $gigography       = ($options['gigography'])      ? 'checked="checked"' : '';
     $hide_if_empty    = ($options['hide_if_empty'])   ? 'checked="checked"' : '';
-    $show_pagination  = ($options['show_pagination']) ? 'checked="checked"' : '';    
+    $show_pagination  = ($options['show_pagination']) ? 'checked="checked"' : '';
     $songkick_logo    = htmlspecialchars($options['logo'], ENT_QUOTES);
     $date_color       = htmlspecialchars($options['date_color'], ENT_QUOTES);
     $number_of_events = htmlspecialchars($options['number_of_events']);
@@ -108,36 +111,10 @@ function songkick_admin_settings() {
     echo '<span class="description">For users only</span>';
     echo '</td></tr>';
 
-    echo '<tr><td colspan="2">You can also specify different user, artist, venue, or metro area ids when using the shortcode function. ';
-    echo ' <br>For users:&nbsp;&nbsp;<code>[songkick_concerts_and_festivals songkick_id=your_username &nbsp;songkick_id_type=user]</code>';
-    echo ' <br>For artists: <code>[songkick_concerts_and_festivals songkick_id=your_artist_id songkick_id_type=artist]</code>';
-    echo ' <br>For venues: <code>[songkick_concerts_and_festivals songkick_id=your_venue_id songkick_id_type=venue]</code>';
-    echo ' <br>For metro areas: <code>[songkick_concerts_and_festivals songkick_id=your_metro_area_id songkick_id_type=metro_area]</code>';
+    echo '<tr><th><label for="songkick_gigography">Show past events (gigography)?</label></th>';
+    echo '<td><input id="songkick_gigography" name="songkick_gigography" type="checkbox" '.$gigography.' /> ';
+    echo '<span class="description">For users and artists only</span>';
     echo '</td></tr>';
-
-    echo '</table>';
-
-    echo '<br><h3>Shortcode settings</h3>';
-    echo '<table class="form-table">';
-    echo '<tr><th><label for="songkick_shortcode_number_of_events">Number of events to show</label></th>';
-    echo '<td><input id="songkick_shortcode_number_of_events" name="songkick_shortcode_number_of_events" type="text" value="'.$shortcode_number_of_events.'" /> ';
-    echo '<span class="description"> Max. 100</span>';
-    echo '</td></tr>';
-    echo '<tr><th><label for="shortcode_songkick_logo">' . 'Songkick logo' . '</label></th>';
-    echo '<td><select id="shortcode_songkick_logo" name="shortcode_songkick_logo">';
-    echo '    <option value="songkick-logo.png" '.(($shortcode_songkick_logo == 'songkick-logo.png') ? ' selected' : '').'>' .
-                    'white background' . '</option>';
-    echo '    <option value="songkick-logo-black.png" '.(($shortcode_songkick_logo == 'songkick-logo-black.png') ? ' selected' : '').'>' .
-                    'black background' . '</option>';
-    echo '  </select>';
-    echo '</td></tr>';
-    echo '<tr><th><label for="shortcode_songkick_date_color">' . 'Background color for date:' . '</label></th>';
-    echo '<td><input id="shortcode_songkick_date_color" name="shortcode_songkick_date_color" type="text" value="'.$shortcode_date_color.'" />';
-    echo '</td></tr>';
-    echo '<tr><th><label for="songkick_show_pagination">Show pagination?</label></th>';
-    echo '<td><input id="songkick_show_pagination" name="songkick_show_pagination" type="checkbox" '.$show_pagination.' /> ';
-    echo '</td></tr>';
-    
     echo '</table>';
 
     echo '<br><h3>Widget settings</h3>';
@@ -168,6 +145,41 @@ function songkick_admin_settings() {
     echo '<tr><th><label for="songkick_date_color">' . 'Background color for date:' . '</label></th>';
     echo '<td><input id="songkick_date_color" name="songkick_date_color" type="text" value="'.$date_color.'" />';
     echo '</td></tr>';
+
+    echo '</table>';
+
+    echo '<br><h3>Shortcode settings</h3>';
+    echo '<table class="form-table">';
+
+    echo '<tr><td colspan="2">You can specify different user, artist, venue, or metro area ids when using the shortcode function. ';
+    echo ' <br>For users:&nbsp;&nbsp;<code>[songkick_concerts_and_festivals songkick_id=your_username &nbsp;songkick_id_type=user]</code>';
+    echo ' <br>For artists: <code>[songkick_concerts_and_festivals songkick_id=your_artist_id songkick_id_type=artist]</code>';
+    echo ' <br>For venues: <code>[songkick_concerts_and_festivals songkick_id=your_venue_id songkick_id_type=venue]</code>';
+    echo ' <br>For metro areas: <code>[songkick_concerts_and_festivals songkick_id=your_metro_area_id songkick_id_type=metro_area]</code>';
+    echo '</td></tr>';
+
+    echo '<tr><th><label for="songkick_shortcode_number_of_events">Number of events to show</label></th>';
+    echo '<td><input id="songkick_shortcode_number_of_events" name="songkick_shortcode_number_of_events" type="text" value="'.$shortcode_number_of_events.'" /> ';
+    echo '<span class="description"> Max. 100</span>';
+    echo '</td></tr>';
+    echo '<tr><th><label for="shortcode_songkick_logo">' . 'Songkick logo' . '</label></th>';
+    echo '<td><select id="shortcode_songkick_logo" name="shortcode_songkick_logo">';
+    echo '    <option value="songkick-logo.png" '.(($shortcode_songkick_logo == 'songkick-logo.png') ? ' selected' : '').'>' .
+                    'white background' . '</option>';
+    echo '    <option value="songkick-logo-black.png" '.(($shortcode_songkick_logo == 'songkick-logo-black.png') ? ' selected' : '').'>' .
+                    'black background' . '</option>';
+    echo '  </select>';
+    echo '</td></tr>';
+
+    echo '<tr><th><label for="shortcode_songkick_date_color">' . 'Background color for date:' . '</label></th>';
+    echo '<td><input id="shortcode_songkick_date_color" name="shortcode_songkick_date_color" type="text" value="'.$shortcode_date_color.'" />';
+    echo '</td></tr>';
+    echo '<tr><th><label for="songkick_show_pagination">Show pagination?</label></th>';
+    echo '<td><input id="songkick_show_pagination" name="songkick_show_pagination" type="checkbox" '.$show_pagination.' /> ';
+    echo '</td></tr>';
+
+    echo ' <tr><td colspan="2">Override shortcode settings: ';
+    echo ' <ul><li><code>gigography=true|false</code></li><li><code>number_of_events=integer</code></li><li><code>show_pagination=true|false</code></li></ul></td></tr>';
 
     echo '</table>';
 
