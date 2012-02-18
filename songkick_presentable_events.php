@@ -5,6 +5,7 @@ require_once dirname(__FILE__) . '/songkick_user_events.php';
 require_once dirname(__FILE__) . '/songkick_artist_events.php';
 require_once dirname(__FILE__) . '/songkick_metro_area_events.php';
 require_once dirname(__FILE__) . '/songkick_venue_events.php';
+require_once dirname(__FILE__) . '/songkick_past_events.php';
 
 class SongkickPresentableEvents {
 
@@ -30,6 +31,9 @@ class SongkickPresentableEvents {
         switch ($songkick_id_type) {
             case 'user':
                 $this->songkick_events = new SongkickUserEvents($apikey, $songkick_id, $attendance, $gigography);
+                break;
+            case 'past':
+                $this->songkick_events = new SongkickPastEvents($apikey, $songkick_id);
                 break;
             case 'artist':
                 $this->songkick_events = new SongkickArtistEvents($apikey, $songkick_id, $gigography);

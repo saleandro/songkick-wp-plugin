@@ -7,23 +7,25 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Kasper Hartwich <kasper@hartwich.net>\n"
 
 #: songkick_concerts_and_festivals.php:144
 msgid "Concerts by Songkick"
-msgstr "Concerts par Songkick"
+msgstr "Koncerter fra Songkick"
 
 #: songkick_concerts_and_festivals.php:145
 msgid "Concerts"
-msgstr "Concerts"
+msgstr "Koncerter"
 
 #: songkick_concerts_and_festivals.php:152
 msgid "See all concerts"
-msgstr "Voir tous les concerts"
+msgstr "Se alle koncerter"
 
 #: songkick_concerts_and_festivals.php:172
 msgid "No events..."
-msgstr "Aucun événement..."
+msgstr "Ingen begivenheder..."
 
 #: songkick_concerts_and_festivals.php:187
 msgid "at %1$s"
-msgstr "à %1$s"
+msgstr "ved %1$s"
+

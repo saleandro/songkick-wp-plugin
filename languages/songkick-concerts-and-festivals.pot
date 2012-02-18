@@ -1,7 +1,7 @@
 # This file is distributed under the same license as the Songkick Concerts and Festivals package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Songkick Concerts and Festivals 0.2 \n"
+"Project-Id-Version: Songkick Concerts and Festivals 0.2\n"
 "Report-Msgid-Bugs-To: wp-polyglots@lists.automattic.com\n"
 "POT-Creation-Date: 2011-01-28 10:41:38+00:00\n"
 "MIME-Version: 1.0\n"
