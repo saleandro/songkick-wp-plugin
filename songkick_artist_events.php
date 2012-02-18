@@ -5,9 +5,10 @@ class SongkickArtistEvents extends SongkickEvents {
     public $id;
     public $apikey;
 
-    function SongkickArtistEvents($apikey, $id) {
+    function SongkickArtistEvents($apikey, $id, $gigography=false) {
         $this->SongkickEvents($apikey);
         $this->id = trim($id);
+        $this->gigography = $gigography;
     }
 
     function profile_url() {
@@ -15,7 +16,8 @@ class SongkickArtistEvents extends SongkickEvents {
     }
 
     protected function url($page, $per_page) {
-        return "$this->apiurl/artists/$this->id/calendar.json?apikey=$this->apikey&per_page=$per_page&page=$page";
+        $method = $this->gigography ? 'gigography' : 'calendar';
+        return "$this->apiurl/artists/$this->id/$method.json?apikey=$this->apikey&per_page=$per_page&page=$page";
     }
 }
 

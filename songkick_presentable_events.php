@@ -22,6 +22,8 @@ class SongkickPresentableEvents extends SongkickPresentable {
         }
         $apikey           = $options['apikey'];
         $attendance       = $options['attendance'];
+        if (!isset($options['gigography'])) $options['gigography'] = false;
+        $gigography       = $options['gigography'];
 
         $this->number_of_events = $options['number_of_events'];
         if (!isset($options['show_pagination'])) $options['show_pagination'] = false;
@@ -31,10 +33,10 @@ class SongkickPresentableEvents extends SongkickPresentable {
 
         switch ($songkick_id_type) {
             case 'user':
-                $this->songkick_events = new SongkickUserEvents($apikey, $songkick_id, $attendance);
+                $this->songkick_events = new SongkickUserEvents($apikey, $songkick_id, $attendance, $gigography);
                 break;
             case 'artist':
-                $this->songkick_events = new SongkickArtistEvents($apikey, $songkick_id);
+                $this->songkick_events = new SongkickArtistEvents($apikey, $songkick_id, $gigography);
                 break;
             case 'metro_area':
                 $this->songkick_events = new SongkickMetroAreaEvents($apikey, $songkick_id);
