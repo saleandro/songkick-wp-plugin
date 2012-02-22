@@ -40,10 +40,10 @@ License: GPL3
 if (!class_exists('WP_Http'))
     include_once(ABSPATH . WPINC . '/class-http.php');
 
-define('SONGKICK_OPTIONS', 'songkick-concerts');
-define('SONGKICK_TEXT_DOMAIN', 'songkick-concerts-and-festivals');
+define('SONGKICK_OPTIONS',       'songkick-concerts');
+define('SONGKICK_TEXT_DOMAIN',   'songkick-concerts-and-festivals');
 define('SONGKICK_I18N_ENCODING', 'UTF-8');
-define('SONGKICK_CACHE', 'songkick-concerts-cache');
+define('SONGKICK_CACHE',         'songkick-concerts-cache');
 define('SONGKICK_REFRESH_CACHE', 60 * 60);
 
 require_once dirname(__FILE__) . '/songkick_presentable_events.php';
@@ -52,16 +52,14 @@ require_once dirname(__FILE__) . '/songkick_settings.php';
 /**
  * Global Initialization of the Songkick Plugin
  */
-function songkick_plugin_init()
-{
+function songkick_plugin_init() {
     // Load Plugin Text Domain for i18n
-    load_plugin_textdomain(SONGKICK_TEXT_DOMAIN, false, dirname(plugin_basename(__FILE__)) . '/languages/');
+    load_plugin_textdomain(SONGKICK_TEXT_DOMAIN, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 
 add_action('init', 'songkick_plugin_init');
 
-function songkick_concerts_and_festivals_shortcode_handler($options = null)
-{
+function songkick_concerts_and_festivals_shortcode_handler($options = null) {
     try {
         if (isset($_GET['event_id'])) {
             wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css');
@@ -109,15 +107,13 @@ function songkick_concerts_and_festivals_shortcode_handler($options = null)
 /**
  * Global Initialization of the Songkick Sidebar Widget
  */
-function songkick_widget_init()
-{
+function songkick_widget_init() {
     if (!function_exists('register_sidebar_widget'))
         return;
 
     wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css');
 
-    function songkick_widget($args)
-    {
+    function songkick_widget($args) {
         try {
 
             $options = get_option(SONGKICK_OPTIONS);
@@ -148,8 +144,7 @@ function songkick_widget_init()
 }
 
 add_action('admin_menu', 'songkick_admin_menu');
-function songkick_admin_menu()
-{
+function songkick_admin_menu() {
     add_options_page('Songkick Concerts and Festivals', 'Songkick', 'administrator', 'songkick-concerts-and-festivals', 'songkick_admin_settings');
 }
 

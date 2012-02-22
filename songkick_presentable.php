@@ -7,14 +7,12 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class SongkickPresentable
-{
+class SongkickPresentable {
 
     public $border_color = '#878787';
     public $template = null;
 
-    protected function render($template, $pass = array())
-    {
+    protected function render($template, $pass = array()) {
         extract($pass);
         $located_template = locate_template(array($template),false,false);
         ob_start();
@@ -27,8 +25,7 @@ class SongkickPresentable
         return ob_get_clean();
     }
 
-    protected function event_name($event)
-    {
+    protected function event_name($event) {
         if ($this->is_festival($event)) {
             return $event->displayName;
         } else {
@@ -43,13 +40,11 @@ class SongkickPresentable
         }
     }
 
-    protected function is_festival($event)
-    {
+    protected function is_festival($event) {
         return (strtolower($event->type) == 'festival');
     }
 
-    protected function event_url($event,$page=false)
-    {
+    protected function event_url($event,$page=false) {
         $options = get_option(SONGKICK_OPTIONS);
 
         if (!isset($options['show_events_locally']) || $options['show_events_locally'] == false) {
@@ -67,8 +62,7 @@ class SongkickPresentable
         }
     }
 
-    protected function venue_to_html($event, $new_line = ", ")
-    {
+    protected function venue_to_html($event, $new_line = ", ") {
         $venue = '<span itemprop="location" itemscope itemtype="http://schema.org/Place" class="venue">';
         if ($event->venue->id) {
             $venue .= '<span itemprop="name">' . htmlentities($event->venue->displayName, ENT_QUOTES, SONGKICK_I18N_ENCODING) . '</span>' . $new_line;
@@ -86,16 +80,14 @@ class SongkickPresentable
         return $venue;
     }
 
-    protected function powered_by_songkick($logo)
-    {
+    protected function powered_by_songkick($logo) {
         $text = __('Concerts by Songkick', SONGKICK_TEXT_DOMAIN);
         $html = "<a class='powered-by' href='http://www.songkick.com/'>";
         $html .= "<img src='" . site_url('/wp-content/plugins/songkick-concerts-and-festivals/' . $logo) . "' title='" . htmlentities($text, ENT_QUOTES, SONGKICK_I18N_ENCODING) . "' alt='" . htmlentities($text, ENT_QUOTES, SONGKICK_I18N_ENCODING) . "' /></a>";
         return $html;
     }
 
-    function date()
-    {
+    function date() {
         return strtotime($this->event->start->date);
     }
 
@@ -104,8 +96,7 @@ class SongkickPresentable
      * @param string $date_color (optional) An override background color, in the #rrggbb form.
      * @return string The HTML block.
      */
-    protected function date_to_html($event, $no_calendar_style, $date_color)
-    {
+    protected function date_to_html($event, $no_calendar_style, $date_color) {
         /*
          * Localization (l10n) of the date.
          *
