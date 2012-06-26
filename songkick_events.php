@@ -1,23 +1,29 @@
 <?php
 
+class InvalidApiKeyException extends Exception { }
+
 class SongkickEvents {
     public $apikey;
     public $upcoming_events = array();
 
     function SongkickEvents($apikey) {
-        $this->apikey = trim($apikey);
+        $this->apikey = ($apikey && $apikey != '') ? trim($apikey) : 'io09K9l3ebJxmxe2';
         $this->apiurl = 'http://api.songkick.com/api/3.0';
     }
 
-    function get_upcoming_events($page=1, $per_page=10) {
+    function get_events($page=1, $per_page=10) {
         $url = $this->url($page, $per_page);
         $cached_results = $this->get_cached_results($url);
         if ($this->cache_expired($cached_results)) {
-            $cached_results = $this->get_uncached_upcoming_events($url);
+            $cached_results = $this->get_uncached_events($url);
             $cached_results['timestamp'] = time();
             $this->set_cached_results($url, $cached_results);
         }
         return $cached_results;
+    }
+
+    function test_api_call() {
+        $this->fetch("$this->apiurl/metro_areas/24426/calendar.xml?apikey=$this->apikey&page=1&per_page=1");
     }
 
     protected function get_cached_results($key) {
@@ -29,7 +35,7 @@ class SongkickEvents {
         }
     }
 
-    protected function get_uncached_upcoming_events($url) {
+    protected function get_uncached_events($url) {
         $response = $this->fetch($url);
         return $this->events_from_json($response);
     }
@@ -51,10 +57,13 @@ class SongkickEvents {
     protected function fetch($url) {
         $http     = new WP_Http;
         $response =  $http->request($url);
+
         if (is_wp_error($response)) {
             throw new Exception('WP_Http/WP_Error message: '.$response->get_error_message());
         } elseif (!is_array($response)) {
             throw new Exception('WP_Http/Invalid response');
+        } elseif  ($response['response']['code'] == 403) {
+            throw new InvalidApiKeyException();
         } elseif  ($response['response']['code'] != 200) {
             throw new Exception('WP_Http error response: '.$response['response']['code']);
         }

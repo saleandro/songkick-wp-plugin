@@ -21,12 +21,15 @@ class SongkickPresentableEvents {
         if (!isset($options['gigography'])) $options['gigography'] = false;
         $gigography       = $options['gigography'];
 
-        $this->number_of_events = $options['number_of_events'];
+        $this->number_of_events = is_numeric($options['number_of_events']) ? $options['number_of_events'] : 10;
         if (!isset($options['show_pagination'])) $options['show_pagination'] = false;
         $this->show_pagination = $options['show_pagination'];
         if (!isset($options['page'])) $options['page'] = 1;
         $this->page            = intval($options['page']);
 
+        if (empty($songkick_id)) {
+            throw new Exception("Blank songkick id");
+        }
         switch ($songkick_id_type) {
             case 'user':
                 $this->songkick_events = new SongkickUserEvents($apikey, $songkick_id, $attendance, $gigography);
@@ -44,7 +47,7 @@ class SongkickPresentableEvents {
                 throw new Exception("Unknown songkick id type: $songkick_id_type");
         }
 
-        $results          = $this->songkick_events->get_upcoming_events($this->page, $this->number_of_events);
+        $results          = $this->songkick_events->get_events($this->page, $this->number_of_events);
         $this->events     = $results['events'];
         $this->total      = $results['total'];
         $this->date_color = $options['date_color'];
@@ -105,7 +108,7 @@ class SongkickPresentableEvents {
         $str .= $this->powered_by_songkick($this->logo);
         return $str;
     }
-    
+
     function no_events() {
         return empty($this->events);
     }

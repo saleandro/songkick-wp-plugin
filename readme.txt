@@ -2,8 +2,8 @@
 Contributors: saleandro, coox
 Tags: songkick, concerts, events, festivals, widget
 Requires at least: 2.8.2, PHP 5 or higher
-Tested up to: 3.3.1
-Stable tag: 0.9.3.2
+Tested up to: 3.4
+Stable tag: 0.9.4
 
 This plugin lets you display events for a Songkick user, artist, venue, or metro area on your WordPress blog, as a widget or shortcode.
 
@@ -28,25 +28,25 @@ Events can be displayed by adding the Songkick widget to your template, or by ad
 
 = Requirements =
 
-*   You'll need a Songkick API key. Apply for a key here: [Songkick API docs](http://www.songkick.com/developer)
+*   This plugin uses a non-commercial Songkick API key. If you have a commercial website, you’ll need your own Songkick API key. Please read through [Songkick’s API terms of use](http://www.songkick.com/developer/api-terms-of-use). Apply for a key here: [Songkick API docs](http://www.songkick.com/developer)
 *   This plugin requires PHP 5
 
 = Settings =
 
-Go to the Settings page to configure the plugin. 
+Go to the Settings page to configure default options for the plugin. You can also specify your settings under Plugins/Widget or via shortcode options.
 
-*   For a user, simply put your username in the admin interface. 
+*   For a user, simply put your username in the admin interface.
 *   For an artist, you should use the artist’s Songkick id, as shown in the url for your artist page. For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123".
 *   The same goes for metro areas: "http://www.songkick.com/metro_areas/123-city-name" has the id "123".
 *   And venues: "http://www.songkick.com/venues/123-venue-name" has the id "123".
 
 = Widget =
 
-After configuring the plugin, go to the admin Widgets page and simply drag the widget into a sidebar.
+Go to the admin Widgets page and simply drag the widget into a sidebar and configure it.
 
 = Shortcode =
 
-After configuring the plugin, add the shortcode [songkick_concerts_and_festivals] in the content of any blog post.
+Add the shortcode [songkick_concerts_and_festivals] in the content of any blog post.
 
 When using a shortcode, you can set which artist, venue, metro area, or user you want to display events for, allowing you to show events for different entities:
 
@@ -70,6 +70,7 @@ You can call the shortcode method directly in your PHP code:
 
 = Blogs using this plugin =
 
+*   [Blur](http://www.blur.co.uk/info/live-dates/)
 *   [Big Boi](http://bigboi.com/tour/)
 *   [OK Go](http://www.okgo.net/shows/)
 *   [Haircut Records](http://haircutrecords.co.uk/site/)
@@ -87,7 +88,8 @@ The code lives on [Github](http://github.com/saleandro/songkick-wp-plugin). To s
 
 1. Upload the directory "songkick_concerts_and_festivals" to the "/wp-content/plugins/" directory
 1. Activate the plugin through the "Plugins" menu
-1. Go to the Settings page for Songkick and set your username/artist/venue/metro area ID and API key. Apply for a key here: http://www.songkick.com/developer
+1. Go to the Settings page for Songkick or the Widgets page and set your username/artist/venue/metro area ID.
+1. Please read through [Songkick’s API terms of use](http://www.songkick.com/developer/api-terms-of-use). If you have a commercial website, please apply for your own API key here: http://www.songkick.com/developer and configure it on the Settings page.
 1. Add the widget to a sidebar or the shortcode anywhere in your blog.
 
 == Screenshots ==
@@ -126,3 +128,8 @@ See Songkick’s admin settings for details.
 * Support for displaying venue events.
 * Markup with support for events as defined by [Schema.org](http://www.schema.org/)
 * Paginated list of events for shortcode option.
+
+= 0.9.4 -
+
+* Reimplementation of the Widget class. Allows for multilple Widget instances.
+* Remove requirement for an API key for *non-commercial* websites.

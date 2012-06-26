@@ -1,6 +1,6 @@
 div.songkick-events .profile-title, .pagination {
-    margin-top: 8px; 
-    margin-bottom: 10px; 
+    margin-top: 8px;
+    margin-bottom: 10px;
     float: right;
 }
 
@@ -14,16 +14,16 @@ div.songkick-events .powered-by img {
 }
 
 div.songkick-events .event-name {
-    display:block;
-    margin-left:44px;
+    display: block;
+    margin-left: 44px;
 }
 
 div.songkick-events ul {
-    border-bottom:1px solid #CCCCCC;
-    margin-bottom:5px;
+    border-bottom: 1px solid #CCCCCC;
+    margin-bottom: 5px;
     margin-top: 10px;
     margin-left: 0px;
-    list-style:none outside none;
+    list-style: none outside none;
 }
 
 div.songkick-events li {
