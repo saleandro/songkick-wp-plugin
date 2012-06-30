@@ -9,19 +9,18 @@ require_once dirname(__FILE__) . '/songkick_venue_events.php';
 class SongkickPresentableEvents {
 
     function SongkickPresentableEvents($options) {
-        if ($options['username']) { // legacy
+        if (isset($options['username']) && $options['username']) { // legacy
             $songkick_id      = $options['username'];
             $songkick_id_type = 'user';
         } else {
             $songkick_id      = $options['songkick_id'];
             $songkick_id_type = $options['songkick_id_type'];
         }
-        $apikey           = $options['apikey'];
-        $attendance       = $options['attendance'];
-        if (!isset($options['gigography'])) $options['gigography'] = false;
-        $gigography       = $options['gigography'];
+        $apikey     = (isset($options['apikey'])) ? $options['apikey'] : null;
+        $attendance = (isset($options['attendance'])) ? $options['attendance'] : false;
+        $gigography = (isset($options['gigography'])) ? $options['gigography'] : false;
 
-        $this->number_of_events = is_numeric($options['number_of_events']) ? $options['number_of_events'] : 10;
+        $this->number_of_events = (isset($options['number_of_events']) && is_numeric($options['number_of_events'])) ? $options['number_of_events'] : 10;
         if (!isset($options['show_pagination'])) $options['show_pagination'] = false;
         $this->show_pagination = $options['show_pagination'];
         if (!isset($options['page'])) $options['page'] = 1;
@@ -50,8 +49,8 @@ class SongkickPresentableEvents {
         $results          = $this->songkick_events->get_events($this->page, $this->number_of_events);
         $this->events     = $results['events'];
         $this->total      = $results['total'];
-        $this->date_color = $options['date_color'];
-        $this->logo       = $options['logo'];
+        $this->date_color = isset($options['date_color']) ? $options['date_color'] : null;
+        $this->logo       = isset($options['logo']) ? $options['logo'] : null;
         $this->no_calendar_style = false;
         if (isset($options['no_calendar_style'])) {
             $this->no_calendar_style = $options['no_calendar_style'];

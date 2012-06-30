@@ -84,8 +84,8 @@ class SongkickConcertsWidget extends WP_Widget {
         if (empty($this->widget['fields'])) return false;
 
         $key = 'widget-' . $this->widget['id'];
-        if (current_user_can('manage_options') && isset($_POST[$key])) {
-          $this->update($instance, $_POST[$key][$_POST['widget_number']]);
+        if (current_user_can('manage_options') && isset($_POST[$key]) && isset($_POST[$key][$_POST['widget_number']])) {
+          $this->update($_POST[$key][$_POST['widget_number']], $instance);
         }
 
         foreach ($this->widget['fields'] as $field) {
@@ -171,7 +171,8 @@ class SongkickConcertsWidget extends WP_Widget {
         $this->widget['number'] = $this->number;
 
         $default_options = get_option(SONGKICK_OPTIONS);
-        $instance = array_merge($default_options, $instance);
+        if ($default_options)
+            $instance = array_merge($default_options, $instance);
         if (!$instance['songkick_id'] or $instance['songkick_id'] == '')
             $instance['songkick_id'] = $default_options['songkick_id'];
         if (!$instance['songkick_id_type'] or $instance['songkick_id_type'] == '')
