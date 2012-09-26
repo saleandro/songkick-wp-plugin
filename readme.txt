@@ -136,3 +136,7 @@ See Songkick’s admin settings for details.
 
 = 0.9.4.1 =
 * Fixing up and removing warnings
+
+= 0.9.4.2 =
+* Sort order of past events is descending
+

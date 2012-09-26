@@ -17,8 +17,15 @@ class SongkickUserEvents extends SongkickEvents {
     }
 
     protected function url($page, $per_page) {
-        $method = $this->gigography ? 'gigography' : 'events';
-        return "$this->apiurl/users/$this->username/$method.json?apikey=$this->apikey&per_page=$per_page&attendance=$this->attendance&page=$page";
+        $url = "$this->apiurl/users/$this->username";
+        if ($this->gigography) {
+            $url .= "gigography.json?order=desc";
+        } else {
+            $url .= "calendar.json?order=asc";
+        }
+        $url .= "&apikey=$this->apikey&per_page=$per_page&attendance=$this->attendance&page=$page";
+        return $url;
+
     }
 }
 ?>
