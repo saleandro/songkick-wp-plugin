@@ -61,7 +61,7 @@ Override shortcode settings:
 *   number_of_events=integer
 *   show_pagination=true|false
 *   no_calendar_style=true|false — removes the calendar style from the event dates
-
+*   order=asc|desc - sort order for artist or user events
 
 = PHP code =
 
