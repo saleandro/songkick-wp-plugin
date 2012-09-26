@@ -19,6 +19,7 @@ class SongkickPresentableEvents {
         $apikey     = (isset($options['apikey'])) ? $options['apikey'] : null;
         $attendance = (isset($options['attendance'])) ? $options['attendance'] : false;
         $gigography = (isset($options['gigography'])) ? $options['gigography'] : false;
+        $order      = (isset($options['order'])) ? $options['order'] : null;
 
         $this->number_of_events = (isset($options['number_of_events']) && is_numeric($options['number_of_events'])) ? $options['number_of_events'] : 10;
         if (!isset($options['show_pagination'])) $options['show_pagination'] = false;
@@ -31,10 +32,10 @@ class SongkickPresentableEvents {
         }
         switch ($songkick_id_type) {
             case 'user':
-                $this->songkick_events = new SongkickUserEvents($apikey, $songkick_id, $attendance, $gigography);
+                $this->songkick_events = new SongkickUserEvents($apikey, $songkick_id, $attendance, $gigography, $order);
                 break;
             case 'artist':
-                $this->songkick_events = new SongkickArtistEvents($apikey, $songkick_id, $gigography);
+                $this->songkick_events = new SongkickArtistEvents($apikey, $songkick_id, $gigography, $order);
                 break;
             case 'metro_area':
                 $this->songkick_events = new SongkickMetroAreaEvents($apikey, $songkick_id);
