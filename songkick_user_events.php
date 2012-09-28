@@ -23,7 +23,7 @@ class SongkickUserEvents extends SongkickEvents {
             if (!$this->order)
                 $this->order = 'desc';
         } else {
-            $method = "calendar";
+            $method = "events";
             if (!$this->order)
                 $this->order = 'asc';
         }

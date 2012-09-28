@@ -18,7 +18,7 @@ class SongkickPresentableEvents {
         }
         $apikey     = (isset($options['apikey'])) ? $options['apikey'] : null;
         $attendance = (isset($options['attendance'])) ? $options['attendance'] : false;
-        $gigography = (isset($options['gigography'])) ? $options['gigography'] : false;
+        $gigography = (isset($options['gigography']) && $options['gigography'] == 'true') ? true : false;
         $order      = (isset($options['order'])) ? $options['order'] : null;
 
         $this->number_of_events = (isset($options['number_of_events']) && is_numeric($options['number_of_events'])) ? $options['number_of_events'] : 10;
