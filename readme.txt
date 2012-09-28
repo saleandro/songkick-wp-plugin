@@ -74,7 +74,6 @@ You can call the shortcode method directly in your PHP code:
 *   [Big Boi](http://bigboi.com/tour/)
 *   [OK Go](http://www.okgo.net/shows/)
 *   [Haircut Records](http://haircutrecords.co.uk/site/)
-*   [Anthrax](http://anthrax.com/tour/)
 
 Know any others? Let me know!
 
