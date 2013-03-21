@@ -70,8 +70,6 @@ You can call the shortcode method directly in your PHP code:
 
 = Blogs using this plugin =
 
-*   [Blur](http://www.blur.co.uk/info/live-dates/)
-*   [Big Boi](http://bigboi.com/tour/)
 *   [OK Go](http://www.okgo.net/shows/)
 *   [Haircut Records](http://haircutrecords.co.uk/site/)
 
