@@ -1,6 +1,7 @@
 <?php
 
 class InvalidApiKeyException extends Exception { }
+class HttpError extends Exception { }
 
 class SongkickEvents {
     public $apikey;
@@ -23,7 +24,13 @@ class SongkickEvents {
     }
 
     function test_api_call() {
-        $this->fetch("$this->apiurl/metro_areas/24426/calendar.xml?apikey=$this->apikey&page=1&per_page=1");
+        try {
+            $this->fetch("$this->apiurl/metro_areas/24426/calendar.xml?apikey=$this->apikey&page=1&per_page=1");
+        } catch (HttpError $e) {
+            $msg = 'Error on ' . get_bloginfo('url') . ' while trying to test Songkick Concerts plugins API key: ' . $e->getMessage();
+            error_log($msg, 0);
+            return '';
+        }
     }
 
     protected function get_cached_results($key) {
@@ -59,7 +66,7 @@ class SongkickEvents {
         $response =  $http->request($url);
 
         if (is_wp_error($response)) {
-            throw new Exception('WP_Http/WP_Error message: '.$response->get_error_message());
+            throw new HttpError('WP_Http/WP_Error message: '.$response->get_error_message());
         } elseif (!is_array($response)) {
             throw new Exception('WP_Http/Invalid response');
         } elseif  ($response['response']['code'] == 403) {
