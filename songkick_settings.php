@@ -28,6 +28,7 @@ function songkick_admin_settings() {
             'attendance'    => 'all',
             'gigography'       => false,
             'hide_if_empty'    => false,
+            'disable_cache'    => false,
             'show_pagination'  => false,
             'number_of_events' => 10,
             'logo'          => 'songkick-logo.png',
@@ -47,6 +48,7 @@ function songkick_admin_settings() {
 
         $options['title']          = strip_tags(stripslashes($_POST['songkick_title']));
         $options['hide_if_empty']  = (isset($_POST['songkick_hide_if_empty']) && $_POST['songkick_hide_if_empty'] === 'on');
+        $options['disable_cache']  = (isset($_POST['songkick_disable_cache']) && $_POST['songkick_disable_cache'] === 'on');
         $options['gigography']     = (isset($_POST['songkick_gigography']) && $_POST['songkick_gigography'] === 'on');
         $options['logo']           = strip_tags(stripslashes($_POST['songkick_logo']));
         $options['date_color']     = strip_tags(stripslashes($_POST['songkick_date_color']));
@@ -78,6 +80,7 @@ function songkick_admin_settings() {
     $attendance       = htmlspecialchars($options['attendance']);
     $gigography       = ($options['gigography'])      ? 'checked="checked"' : '';
     $hide_if_empty    = ($options['hide_if_empty'])   ? 'checked="checked"' : '';
+    $disable_cache    = (isset($options['disable_cache']) && $options['disable_cache'])   ? 'checked="checked"' : '';
     $show_pagination  = ($options['show_pagination']) ? 'checked="checked"' : '';
     $songkick_logo    = htmlspecialchars($options['logo'], ENT_QUOTES);
     $date_color       = htmlspecialchars($options['date_color'], ENT_QUOTES);
@@ -136,6 +139,11 @@ function songkick_admin_settings() {
 
     echo '<tr><th><label for="songkick_hide_if_empty">Hide if there are no events?</label></th>';
     echo '<td><input id="songkick_hide_if_empty" name="songkick_hide_if_empty" type="checkbox" '.$hide_if_empty.' /> ';
+    echo '</td></tr>';
+
+    echo '<tr><th><label for="songkick_disable_cache">Disable caching of API requests?</label></th>';
+    echo '<td><input id="songkick_disable_cache" name="songkick_disable_cache" type="checkbox" '.$disable_cache.' /> ';
+    echo '<span class="description"> Warning: it will make your page load slower. Use with caution!</span>';
     echo '</td></tr>';
 
     echo '<tr><th><label for="songkick_logo">' . 'Songkick logo' . '</label></th>';
@@ -197,6 +205,5 @@ function songkick_admin_settings() {
 }
 
 add_action('admin_init', 'check_api_key');
-
 
 ?>

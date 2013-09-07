@@ -142,3 +142,6 @@ See Songkick’s admin settings for details.
 
 = 0.9.4.4 =
 * Catching any error when testing Songkick API key. Some users reported seeing a "name lookup" error on the Settings page.
+
+= 0.9.4.5 =
+* Option to turn off API caching.

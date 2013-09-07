@@ -21,7 +21,7 @@ msgid "See all concerts"
 msgstr ""
 
 #: songkick_concerts_and_festivals.php:172
-msgid "No events..."
+msgid "No upcoming concerts or festivals."
 msgstr ""
 
 #: songkick_concerts_and_festivals.php:187

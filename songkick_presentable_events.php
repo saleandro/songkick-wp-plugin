@@ -30,6 +30,8 @@ class SongkickPresentableEvents {
         if (empty($songkick_id)) {
             throw new Exception("Blank songkick id");
         }
+        if (isset($options['disable_cache']) && $options['disable_cache'])
+            SongkickEvents::$disable_cache = true;
         switch ($songkick_id_type) {
             case 'user':
                 $this->songkick_events = new SongkickUserEvents($apikey, $songkick_id, $attendance, $gigography, $order);
@@ -63,7 +65,7 @@ class SongkickPresentableEvents {
 
         $str = '';
         if (empty($this->events)) {
-            $str .= '<p>'. htmlentities(__('No events...'), ENT_QUOTES, SONGKICK_I18N_ENCODING). '</p>';
+            $str .= '<p>'. htmlentities(__('No upcoming concerts or festivals.'), ENT_QUOTES, SONGKICK_I18N_ENCODING). '</p>';
         } else {
             $str .= '<ul class="songkick-events">';
             foreach($this->events as $event) {

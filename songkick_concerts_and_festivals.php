@@ -6,7 +6,7 @@ Plugin URI: http://github.com/saleandro/songkick-wp-plugin
 Description: Plugin to show concerts based on your Songkick profile. It can display upcoming events for a user, an artist, venue, or metro area/location.
 It can also display past events for users and artists. For a user, simply put your username in the admin interface. For an artist, you should use the artist's Songkick id, as shown in the url for your artist page.
 For example, the url "http://www.songkick.com/artists/123-your-name" has the id "123". The same goes for metro areas or venues: "http://www.songkick.com/venues/123-venue-name" and "http://www.songkick.com/metro_areas/123-city-name" both have the id "123".
-Version: 0.9.4.4
+Version: 0.9.4.5
 Author: Sabrina Leandro
 Author URI: http://github.com/saleandro
 License: GPL3
@@ -34,7 +34,16 @@ License: GPL3
 // error_reporting(E_ALL);
 // if ( !defined('WP_DEBUG') )
 //     define('WP_DEBUG', true);
-// @ini_set('display_errors','On');
+// if ( !defined('WP_DEBUG_LOG') )
+//     define('WP_DEBUG_LOG', true); // Tells WordPress to log everything to the /wp-content/debug.log file
+// if ( !defined('SAVEQUERIES') )
+//     define('SAVEQUERIES', true);
+// End for debugging
+
+// Don't display errors
+@ini_set('display_errors', 0);
+if ( !defined('WP_DEBUG_DISPLAY') )
+    define('WP_DEBUG_DISPLAY', false);
 
 defined('ABSPATH') or die("Cannot access pages directly.");
 defined("DS") or define("DS", DIRECTORY_SEPARATOR);
@@ -90,7 +99,7 @@ function songkick_concerts_and_festivals_shortcode_handler($options = null) {
         $str .= '</div>';
         return $str;
     } catch (Exception $e) {
-        $msg = 'Error on ' . get_bloginfo('url') . ' while trying to display Songkick Concerts plugin: ' . $e->getMessage();
+        $msg = 'Error on ' . get_bloginfo('wpurl') . ' while trying to display Songkick Concerts plugin: ' . $e->getMessage();
         error_log($msg, 0);
         return '';
     }

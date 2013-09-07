@@ -5,7 +5,7 @@ class HttpError extends Exception { }
 
 class SongkickEvents {
     public $apikey;
-    public $upcoming_events = array();
+    public static $disable_cache = false;
 
     function SongkickEvents($apikey) {
         $this->apikey = ($apikey && $apikey != '') ? trim($apikey) : 'io09K9l3ebJxmxe2';
@@ -19,6 +19,9 @@ class SongkickEvents {
             $cached_results = $this->get_uncached_events($url);
             $cached_results['timestamp'] = time();
             $this->set_cached_results($url, $cached_results);
+            error_log('INFO: ' . get_bloginfo('wpurl') . " Getting data from API: $url");
+        } else {
+            error_log('INFO: ' . get_bloginfo('wpurl') . " Getting data from cache: $url");
         }
         return $cached_results;
     }
@@ -27,7 +30,7 @@ class SongkickEvents {
         try {
             $this->fetch("$this->apiurl/metro_areas/24426/calendar.xml?apikey=$this->apikey&page=1&per_page=1");
         } catch (HttpError $e) {
-            $msg = 'Error on ' . get_bloginfo('url') . ' while trying to test Songkick Concerts plugins API key: ' . $e->getMessage();
+            $msg = 'ERROR: ' . get_bloginfo('wpurl') . ' while trying to test Songkick Concerts plugins API key: ' . $e->getMessage();
             error_log($msg, 0);
             return '';
         }
@@ -57,6 +60,7 @@ class SongkickEvents {
     }
 
     protected function cache_expired($cached_results) {
+        if (self::$disable_cache) return true;
         if (!$cached_results || $cached_results == null || !isset($cached_results['total'])) return true;
         return (bool) ((time() - $cached_results['timestamp'] ) > SONGKICK_REFRESH_CACHE);
     }

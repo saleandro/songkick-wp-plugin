@@ -220,7 +220,7 @@ class SongkickConcertsWidget extends WP_Widget {
                 echo $after_widget;
             }
         } catch (Exception $e) {
-            $msg = 'Error on ' . get_bloginfo('url') . ' while trying to display Songkick Concerts plugin: ' . $e->getMessage();
+            $msg = 'Error on ' . get_bloginfo('wpurl') . ' while trying to display Songkick Concerts plugin: ' . $e->getMessage();
             error_log($msg, 0);
             return '';
         }
