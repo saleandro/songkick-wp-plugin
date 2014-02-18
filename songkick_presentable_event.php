@@ -5,7 +5,7 @@ class SongkickPresentableEvent {
         $this->event = $event;
         $this->border_color = '#878787';
     }
-    
+
     function to_html($no_calendar_style, $date_color) {
         $date = $this->date_to_html($no_calendar_style, $date_color);
 
@@ -49,14 +49,24 @@ class SongkickPresentableEvent {
             $venue .= '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">';
             $venue .= '  <meta itemprop="latitude" content="'.$this->event->location->lat.'" />';
             $venue .= '  <meta itemprop="longitude" content="'.$this->event->location->lng.'" />';
-            $venue .= '</span>';      
+            $venue .= '</span>';
         }
         $venue .= '</span>';
         return $venue;
     }
-    
+
     function date() {
         return strtotime($this->event->start->date);
+    }
+
+    function end_date() {
+        if ($this->event->end->date) {
+            $end_date = strtotime($this->event->end->date);
+            if ($end_date != $this->date) {
+                return $end_date;
+            }
+        }
+        return null;
     }
 
     protected function is_festival() {
@@ -79,6 +89,7 @@ class SongkickPresentableEvent {
         // Save current locale setting.
         // WARNING: setlocale() is known to not be thread-safe!
         $date = $this->date();
+        $end_date = $this->end_date();
         $saved_locale = setlocale(LC_TIME,"0");
         setlocale(LC_TIME, WPLANG.'.UTF-8');
         $day_name = strftime('%a', $date);
@@ -110,11 +121,27 @@ class SongkickPresentableEvent {
         // Construct the HTML block presenting the formatted date.
         $override_color = (empty($date_color)) ? '' : ';background-color:'.$date_color;
         $str = '<meta itemprop="startDate" content="'.date('c', $date).'">';
+        if ($end_date) {
+            $str .= '<meta itemprop="endDate" content="'.date('c', $end_date).'">';
+        }
+
+        $year  = date('Y', $date);
+        $day   = date('d', $date);
+        if ($end_date) {
+            $end_day = date('d', $end_date);
+            if ($day != $end_day) {
+                $day .=  ' - '.$end_day;
+                if (!$no_calendar_style) {
+                    $css['day'] .= ';font-size:1.3em';
+                }
+            }
+        }
+
         $str .= '<span class="date-wrapper" style="'.$css['date-wrapper'].'"><a style="'.$css['a-date-wrapper'].'" title="'.date('Y-m-d', $date).'" href="'.$this->event_url().'">';
         $str .= '  <span class="day-name" style="'.$css['day-name'].$override_color.'">'.htmlentities($day_name, ENT_QUOTES, 'UTF-8').'</span>';
         $str .= '  <span class="day-month" style="'.$css['day-month'].'"><span class="month" style="'.$css['month'].'">'.htmlentities($month_name, ENT_QUOTES, 'UTF-8').'</span>';
-        $str .= '  <span class="day" style="'.$css['day'].'">'.date('d', $date).'</span></span>';
-        $str .= '  <span class="year" style="'.$css['year'].'">'.date('Y', $date).'</span>';
+        $str .= '  <span class="day" style="'.$css['day'].'">'.$day.'</span></span>';
+        $str .= '  <span class="year" style="'.$css['year'].'">'.$year.'</span>';
         $str .= '</a></span>';
 
         return $str;
