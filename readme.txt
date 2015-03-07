@@ -70,10 +70,7 @@ You can call the shortcode method directly in your PHP code:
 
 = Blogs using this plugin =
 
-*   [OK Go](http://www.okgo.net/shows/)
-*   [Haircut Records](http://haircutrecords.co.uk/site/)
-
-Know any others? Let me know!
+Know any blogs using this plugin? Let me know!
 
 = Contribute =
 
