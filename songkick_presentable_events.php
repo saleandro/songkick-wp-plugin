@@ -65,7 +65,7 @@ class SongkickPresentableEvents {
 
         $str = '';
         if (empty($this->events)) {
-            $str .= '<p>'. htmlentities(__('No upcoming concerts or festivals.'), ENT_QUOTES, SONGKICK_I18N_ENCODING). '</p>';
+            $str .= '<p>'. htmlentities(__('No upcoming concerts or festivals.', SONGKICK_TEXT_DOMAIN), ENT_QUOTES, SONGKICK_I18N_ENCODING). '</p>';
         } else {
             $str .= '<ul class="songkick-events">';
             foreach($this->events as $event) {
