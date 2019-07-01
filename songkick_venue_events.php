@@ -5,8 +5,8 @@ class SongkickVenueEvents extends SongkickEvents {
     public $id;
     public $apikey;
 
-    function SongkickVenueEvents($apikey, $id) {
-        $this->SongkickEvents($apikey);
+    function __construct($apikey, $id) {
+        parent::__construct($apikey);
         $this->id = trim($id);
     }
 

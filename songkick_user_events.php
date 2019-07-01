@@ -5,8 +5,8 @@ class SongkickUserEvents extends SongkickEvents {
     public $username;
     public $apikey;
 
-    function SongkickUserEvents($apikey, $username, $attendance='all', $gigography=true, $order=null) {
-        $this->SongkickEvents($apikey);
+    function __construct($apikey, $username, $attendance='all', $gigography=true, $order=null) {
+        parent::__construct($apikey);
         $this->attendance = $attendance;
         $this->username = trim($username);
         $this->gigography = $gigography;

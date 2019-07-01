@@ -7,7 +7,7 @@ class SongkickEvents {
     public $apikey;
     public static $disable_cache = false;
 
-    function SongkickEvents($apikey) {
+    function __construct($apikey) {
         $this->apikey = ($apikey && $apikey != '') ? trim($apikey) : 'io09K9l3ebJxmxe2';
         $this->apiurl = 'http://api.songkick.com/api/3.0';
     }

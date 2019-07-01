@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/songkick_venue_events.php';
 
 class SongkickPresentableEvents {
 
-    function SongkickPresentableEvents($options) {
+    function __construct($options) {
         if (isset($options['username']) && $options['username']) { // legacy
             $songkick_id      = $options['username'];
             $songkick_id_type = 'user';

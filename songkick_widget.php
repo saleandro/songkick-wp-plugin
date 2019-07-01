@@ -76,10 +76,6 @@ class SongkickConcertsWidget extends WP_Widget {
                              $options = array( 'description' => $this->widget['description']) );
     }
 
-    function SongkickConcertsWidget() {
-        SongkickConcertsWidget::__construct();
-    }
-
     function form($instance) {
         if (empty($this->widget['fields'])) return false;
 

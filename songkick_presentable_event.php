@@ -1,7 +1,7 @@
 <?php
 
 class SongkickPresentableEvent {
-    function SongkickPresentableEvent($event) {
+    function __construct($event) {
         $this->event = $event;
         $this->border_color = '#878787';
     }

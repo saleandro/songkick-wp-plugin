@@ -5,8 +5,8 @@ class SongkickArtistEvents extends SongkickEvents {
     public $id;
     public $apikey;
 
-    function SongkickArtistEvents($apikey, $id, $gigography=false, $order=null) {
-        $this->SongkickEvents($apikey);
+    function __construct($apikey, $id, $gigography=false, $order=null) {
+        parent::__construct($apikey);
         $this->id = trim($id);
         $this->gigography = $gigography;
         $this->order = $order;
