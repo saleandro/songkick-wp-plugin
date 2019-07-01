@@ -60,9 +60,9 @@ class SongkickPresentableEvent {
     }
 
     function end_date() {
-        if ($this->event->end->date) {
+        if (isset($this->event->end) && ($this->event->end->date)) {
             $end_date = strtotime($this->event->end->date);
-            if ($end_date != $this->date) {
+            if ($end_date != $this->date()) {
                 return $end_date;
             }
         }
