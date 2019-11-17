@@ -2,8 +2,8 @@
 Contributors: saleandro, coox
 Tags: songkick, concerts, events, festivals, widget
 Requires at least: 5.2.1, PHP 5.6.20 or higher
-Tested up to: 5.2.1
-Stable tag: 0.9.4.7
+Tested up to: 5.3.0
+Stable tag: 0.9.4.8
 
 This plugin lets you display events for a Songkick user, artist, venue, or metro area on your WordPress blog, as a widget or shortcode.
 
@@ -148,4 +148,7 @@ See Songkick’s admin settings for details.
 
 = 0.9.4.7 =
 * Add Italian translation
+
+= 0.9.4.8 =
+* Use __construct instead of classname as this will be deprecated
 
