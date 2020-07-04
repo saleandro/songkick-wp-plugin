@@ -79,23 +79,10 @@ class SongkickPresentableEvent {
      * @return string The HTML block.
      */
     protected function date_to_html($no_calendar_style, $date_color) {
-        /*
-         * Localization (l10n) of the date.
-         *
-         * Translation of day and month is leveraged to strftime(), the output
-         * of which is controlled by the locale. The locale must therefore be
-         * set to a value based on WPLANG (WordPress localized language).
-         */
-        // Save current locale setting.
-        // WARNING: setlocale() is known to not be thread-safe!
         $date = $this->date();
         $end_date = $this->end_date();
-        $saved_locale = setlocale(LC_TIME,"0");
-        setlocale(LC_TIME, WPLANG.'.UTF-8');
-        $day_name = strftime('%a', $date);
-        $month_name = strftime('%b', $date);
-        // Restore previous locale setting
-        setlocale(LC_TIME, $saved_locale);
+        $day_name = wp_date('D', $date);
+        $month_name = wp_date('M', $date);
 
         // Not happy doing this, but the calendar styling is easily broken by the blog's or other plugin's styling.
         $css = array();
