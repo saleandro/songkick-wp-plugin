@@ -1,6 +1,6 @@
 <?php
 
-add_action('widgets_init', create_function( '', 'return register_widget("SongkickConcertsWidget");'));
+add_action('widgets_init', function( ) { return register_widget( "SongkickConcertsWidget" ); } );
 
 class SongkickConcertsWidget extends WP_Widget {
 
