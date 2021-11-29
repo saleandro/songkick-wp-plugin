@@ -19,9 +19,9 @@ class SongkickEvents {
             $cached_results = $this->get_uncached_events($url);
             $cached_results['timestamp'] = time();
             $this->set_cached_results($url, $cached_results);
-            error_log('INFO: ' . get_bloginfo('wpurl') . " Getting data from API: $url");
+            // error_log('INFO: ' . get_bloginfo('wpurl') . " Getting data from API: $url");
         } else {
-            error_log('INFO: ' . get_bloginfo('wpurl') . " Getting data from cache: $url");
+            // error_log('INFO: ' . get_bloginfo('wpurl') . " Getting data from cache: $url");
         }
         return $cached_results;
     }
