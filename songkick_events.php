@@ -68,15 +68,16 @@ class SongkickEvents {
     protected function fetch($url) {
         $http     = new WP_Http;
         $response =  $http->request($url);
-
         if (is_wp_error($response)) {
             throw new HttpError('WP_Http/WP_Error message: '.$response->get_error_message());
         } elseif (!is_array($response)) {
             throw new Exception('WP_Http/Invalid response');
         } elseif  ($response['response']['code'] == 403) {
-            throw new InvalidApiKeyException();
+            throw new InvalidApiKeyException("403 error: Songkick API key is invalid");
+        } elseif  ($response['response']['code'] == 503) {
+            throw new HttpError("503 error: Songkick API is temporarily unavailable");
         } elseif  ($response['response']['code'] != 200) {
-            throw new Exception('WP_Http error response: '.$response['response']['code']);
+            throw new HttpError('WP_Http error response: '.$response['response']['code']);
         }
         return $response['body'];
     }
