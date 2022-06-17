@@ -9,7 +9,7 @@ class SongkickEvents {
 
     function __construct($apikey) {
         $this->apikey = ($apikey && $apikey != '') ? trim($apikey) : 'io09K9l3ebJxmxe2';
-        $this->apiurl = 'http://api.songkick.com/api/3.0';
+        $this->apiurl = 'https://api.songkick.com/api/3.0';
     }
 
     function get_events($page=1, $per_page=10) {
