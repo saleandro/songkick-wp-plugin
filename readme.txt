@@ -123,7 +123,7 @@ See Songkick’s admin settings for details.
 * Markup with support for events as defined by [Schema.org](http://www.schema.org/)
 * Paginated list of events for shortcode option.
 
-= 0.9.4 -
+= 0.9.4 =
 
 * Reimplementation of the Widget class. Allows for multilple Widget instances.
 * Remove requirement for an API key for *non-commercial* websites.
