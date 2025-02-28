@@ -39,7 +39,13 @@ function songkick_admin_settings() {
         );
     }
 
-    if (current_user_can('manage_options') && isset($_POST['songkick_submit']) && $_POST['songkick_submit']) {
+    $form_submitted = (isset($_POST['songkick_submit']) && $_POST['songkick_submit']);
+    if ($form_submitted) {
+        if (!current_user_can('manage_options')) {
+            wp_die("No permission to view this page");
+        }
+        check_admin_referer( 'songkick_nonce');
+
         $options['username']         = null;
         $options['songkick_id']      = trim(strip_tags(stripslashes($_POST['songkick_id'])));
         $options['songkick_id_type'] = strip_tags(stripslashes($_POST['songkick_id_type']));
@@ -65,6 +71,7 @@ function songkick_admin_settings() {
 
         update_option(SONGKICK_CACHE,   null);
         update_option(SONGKICK_OPTIONS, $options);
+        echo "<div class=\"notice notice-success inline\"><p>Settings saved</p></div>";
     }
 
     if ($options['username']) {
@@ -98,6 +105,7 @@ function songkick_admin_settings() {
     echo '<p class="description">For more information, <a href="http://wordpress.org/extend/plugins/songkick-concerts-and-festivals/">check out the plugin’s page</a>.</p>';
 
     echo '<form method="post">';
+    echo wp_nonce_field('songkick_nonce');
     echo '<h3>Default settings</h3>';
 
     echo '<table class="form-table">';
