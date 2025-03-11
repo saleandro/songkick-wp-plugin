@@ -9,7 +9,8 @@ For example, the url "http://www.songkick.com/artists/123-your-name" has the id 
 Version: 0.10.0
 Author: Sabrina Leandro
 Author URI: http://github.com/saleandro
-License: GPL3
+License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 */
 
@@ -73,7 +74,7 @@ add_action('init', 'songkick_plugin_init');
 
 function songkick_concerts_and_festivals_shortcode_handler($options = null) {
     try {
-        wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css') ;
+        wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css', array(), '1.0') ;
 
         $default_options = get_option(SONGKICK_OPTIONS);
         if ($default_options) {
