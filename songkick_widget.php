@@ -63,7 +63,7 @@ class SongkickConcertsWidget extends WP_Widget {
                 'options' => array( 'songkick-logo.png' => 'white background', 'songkick-logo-black.png' => 'black background')
             ),
             array(
-                'std'  => 'For more options and a disclaimer, please check <a href="options-general.php?page=songkick-concerts-and-festivals">the plugin’s settings page.</a>',
+                'std'  => '<p>For more options and a disclaimer, check our <a href="options-general.php?page=songkick-concerts-and-festivals">Settings page.</a></p>',
                 'type' => 'custom'
             ),
 
@@ -80,54 +80,63 @@ class SongkickConcertsWidget extends WP_Widget {
         if (empty($this->widget['fields'])) return false;
 
         $key = 'widget-' . $this->widget['id'];
-        if (current_user_can('manage_options') && isset($_POST[$key]) && isset($_POST[$key][$_POST['widget_number']])) {
-          $this->update($_POST[$key][$_POST['widget_number']], $instance);
+        
+        $form_submitted = (isset($_POST[$key]) && isset($_POST[$key][$_POST['widget_number']]));
+        if ($form_submitted) {
+            if (!current_user_can('manage_options')) {
+                wp_die("No permission to view this page");
+            }
+            check_admin_referer('songkick_nonce');
+
+            $this->update($_POST[$key][$_POST['widget_number']], $instance);
         }
 
+        echo wp_kses_post(wp_nonce_field('songkick_nonce'));
+        
         foreach ($this->widget['fields'] as $field) {
             $meta = false;
             if (isset($field['id']) && array_key_exists($field['id'], $instance))
-                @$meta = attribute_escape($instance[$field['id']]);
+                @$meta = esc_attr($instance[$field['id']]);
 
             if ($field['type'] != 'custom' && $field['type'] != 'metabox') {
-                echo '<p><label for="', $this->get_field_id($field['id']),'">';
+                echo '<p><label for="', esc_attr($this->get_field_id($field['id'])),'">';
             }
-            if (isset($field['name']) && $field['name']) echo $field['name'],':';
+            if (isset($field['name']) && $field['name']) echo esc_html($field['name']),':';
 
             switch ($field['type']) {
                 case 'text':
-                    echo '<input type="text" name="', $this->get_field_name($field['id']), '" id="', $this->get_field_id($field['id']), '" value="', ($meta ? $meta : @$field['std']), '" class="vibe_text" />',
-                    '<br/><span class="description">', @$field['desc'], '</span>';
+                    echo '<input type="text" name="', esc_attr($this->get_field_name($field['id'])), '" id="', esc_attr($this->get_field_id($field['id'])), '" value="', esc_attr(($meta ? $meta : @$field['std'])), '" class="vibe_text" />',
+                    '<br/><span class="description">', esc_html(@$field['desc']), '</span>';
                     break;
                 case 'textarea':
-                    echo '<textarea class="vibe_textarea" name="', $this->get_field_name($field['id']), '" id="', $this->get_field_id($field['id']), '" cols="60" rows="4" style="width:97%">', $meta ? $meta : @$field['std'], '</textarea>',
-                    '<br/><span class="description">', @$field['desc'], '</span>';
+                    echo '<textarea class="vibe_textarea" name="', esc_attr($this->get_field_name($field['id'])), '" id="', esc_attr($this->get_field_id($field['id'])), '" cols="60" rows="4" style="width:97%">', esc_html(($meta ? $meta : @$field['std'])), '</textarea>',
+                    '<br/><span class="description">', esc_textarea(@$field['desc']), '</span>';
                     break;
                 case 'select':
-                    echo '<select class="vibe_select" name="', $this->get_field_name($field['id']), '" id="', $this->get_field_id($field['id']), '">';
+                    echo '<select class="vibe_select" name="', esc_attr($this->get_field_name($field['id'])), '" id="', esc_attr($this->get_field_id($field['id'])), '">';
 
                     foreach ($field['options'] as $value => $option) {
                         $selected_option = ( $value ) ? $value : $option;
-                        echo '<option', ($value ? ' value="' . $value . '"' : ''), ($meta == $selected_option ? ' selected="selected"' : ''), '>', $option, '</option>';
+                        echo '<option', ($value ? ' value="' . esc_attr($value) . '"' : ''), ($meta == $selected_option ? ' selected="selected"' : ''), '>', esc_html($option), '</option>';
                     }
 
                     echo '</select>',
-                    '<br/><span class="description">', @$field['desc'], '</span>';
+                    '<br/><span class="description">', esc_html(@$field['desc']), '</span>';
                     break;
                 case 'radio':
                     foreach ($field['options'] as $option) {
-                        echo '<input class="vibe_radio" type="radio" name="', $this->get_field_name($field['id']), '" value="', $option['value'], '"', ($meta == $option['value'] ? ' checked="checked"' : ''), ' />',
-                        $option['name'];
+                        echo '<input class="vibe_radio" type="radio" name="', esc_attr($this->get_field_name($field['id'])), '" value="', esc_attr($option['value']), '"', ($meta == $option['value'] ? ' checked="checked"' : ''), ' />',
+                        esc_html($option['name']);
                     }
-                    echo '<br/><span class="description">', @$field['desc'], '</span>';
+                    echo '<br/><span class="description">', esc_html(@$field['desc']), '</span>';
                     break;
                 case 'checkbox':
                     echo '<input type="hidden" name="', $this->get_field_name($field['id']), '" id="', $this->get_field_id($field['id']), '" /> ',
-                         '<input class="vibe_checkbox" type="checkbox" name="', $this->get_field_name($field['id']), '" id="', $this->get_field_id($field['id']), '"', $meta ? ' checked="checked"' : '', ' /> ',
-                    '<br/><span class="description">', @$field['desc'], '</span>';
+                         '<input class="vibe_checkbox" type="checkbox" name="', esc_attr($this->get_field_name($field['id'])), '" id="', esc_attr($this->get_field_id($field['id'])), '"', $meta ? ' checked="checked"' : '', ' /> ',
+                    '<br/><span class="description">', esc_html(@$field['desc']), '</span>';
                     break;
                 case 'custom':
-                    echo $field['std'];
+                    echo wp_kses_post($field['std']);
                     break;
             }
 
@@ -141,15 +150,15 @@ class SongkickConcertsWidget extends WP_Widget {
     function update($new_instance, $old_instance) {
         $instance = wp_parse_args($new_instance, $old_instance);
 
-        $instance['songkick_id']      = trim(strip_tags(stripslashes($instance['songkick_id'])));
-        $instance['songkick_id_type'] = trim(strip_tags(stripslashes($instance['songkick_id_type'])));
-        $instance['attendance']       = strip_tags(stripslashes($instance['attendance']));
+        $instance['songkick_id']      = trim(wp_strip_all_tags(stripslashes($instance['songkick_id'])));
+        $instance['songkick_id_type'] = trim(wp_strip_all_tags(stripslashes($instance['songkick_id_type'])));
+        $instance['attendance']       = wp_strip_all_tags(stripslashes($instance['attendance']));
 
-        $instance['title']            = strip_tags(stripslashes($instance['title']));
+        $instance['title']            = wp_strip_all_tags(stripslashes($instance['title']));
         $instance['hide_if_empty']  = ($instance['hide_if_empty'] === 'on');
         $instance['gigography']     = ($instance['gigography'] === 'on');
-        $instance['logo']           = strip_tags(stripslashes($instance['logo']));
-        $instance['date_color']     = strip_tags(stripslashes($instance['date_color']));
+        $instance['logo']           = wp_strip_all_tags(stripslashes($instance['logo']));
+        $instance['date_color']     = wp_strip_all_tags(stripslashes($instance['date_color']));
         $instance['show_pagination'] = false; # TODO: needs styling for widget
 
         $max_number_events = 100;
@@ -198,22 +207,22 @@ class SongkickConcertsWidget extends WP_Widget {
             if ($hide_if_empty && $sk->no_events()) {
                 echo '';
             } else {
-                wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css') ;
+                wp_enqueue_style('songkick_concerts', '/wp-content/plugins/songkick-concerts-and-festivals/songkick_concerts.css', array(), '1.0',) ;
 
                 $title = $instance['title'];
                 if (!$title || $title == '') {
-                    $title = __('Concerts', SONGKICK_TEXT_DOMAIN);
+                    $title = __('Concerts', 'songkick-concerts-and-festivals');
                 }
                 $title = htmlentities($title, ENT_QUOTES, SONGKICK_I18N_ENCODING);
                 $title = apply_filters('widget_title', $title);
 
-                echo $before_widget;
+                echo wp_kses_post($before_widget);
                 echo '<div class="songkick-events">';
                 if ($title)
-                    echo $before_title . $title . $after_title;
+                    echo wp_kses_post($before_title . $title . $after_title);
                 echo $sk->to_html();
                 echo '</div>';
-                echo $after_widget;
+                echo wp_kses_post($after_widget);
             }
         } catch (Exception $e) {
             $msg = 'Error on ' . get_bloginfo('wpurl') . ' while trying to display Songkick Concerts plugin: ' . $e->getMessage();

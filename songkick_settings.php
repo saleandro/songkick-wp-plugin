@@ -44,27 +44,27 @@ function songkick_admin_settings() {
         if (!current_user_can('manage_options')) {
             wp_die("No permission to view this page");
         }
-        check_admin_referer( 'songkick_nonce');
+        check_admin_referer('songkick_nonce');
 
         $options['username']         = null;
-        $options['songkick_id']      = trim(strip_tags(stripslashes($_POST['songkick_id'])));
-        $options['songkick_id_type'] = strip_tags(stripslashes($_POST['songkick_id_type']));
-        $options['attendance']       = strip_tags(stripslashes($_POST['songkick_attendance']));
-        $options['apikey']           = trim(strip_tags(stripslashes($_POST['songkick_apikey'])));
+        $options['songkick_id']      = trim(wp_strip_all_tags(stripslashes($_POST['songkick_id'])));
+        $options['songkick_id_type'] = wp_strip_all_tags(stripslashes($_POST['songkick_id_type']));
+        $options['attendance']       = wp_strip_all_tags(stripslashes($_POST['songkick_attendance']));
+        $options['apikey']           = trim(wp_strip_all_tags(stripslashes($_POST['songkick_apikey'])));
 
-        $options['title']          = strip_tags(stripslashes($_POST['songkick_title']));
+        $options['title']          = wp_strip_all_tags(stripslashes($_POST['songkick_title']));
         $options['hide_if_empty']  = (isset($_POST['songkick_hide_if_empty']) && $_POST['songkick_hide_if_empty'] === 'on');
         $options['disable_cache']  = (isset($_POST['songkick_disable_cache']) && $_POST['songkick_disable_cache'] === 'on');
         $options['gigography']     = (isset($_POST['songkick_gigography']) && $_POST['songkick_gigography'] === 'on');
-        $options['logo']           = strip_tags(stripslashes($_POST['songkick_logo']));
-        $options['date_color']     = strip_tags(stripslashes($_POST['songkick_date_color']));
+        $options['logo']           = wp_strip_all_tags(stripslashes($_POST['songkick_logo']));
+        $options['date_color']     = wp_strip_all_tags(stripslashes($_POST['songkick_date_color']));
         $limit = (int)$_POST['songkick_number_of_events'];
         if ($limit > $max_number_events) $limit = $max_number_events;
         $options['number_of_events'] = $limit;
 
         $options['show_pagination']          = (isset($_POST['songkick_show_pagination']) && $_POST['songkick_show_pagination'] === 'on');
-        $options['shortcode_logo']           = strip_tags(stripslashes($_POST['shortcode_songkick_logo']));
-        $options['shortcode_date_color']     = strip_tags(stripslashes($_POST['shortcode_songkick_date_color']));
+        $options['shortcode_logo']           = wp_strip_all_tags(stripslashes($_POST['shortcode_songkick_logo']));
+        $options['shortcode_date_color']     = wp_strip_all_tags(stripslashes($_POST['shortcode_songkick_date_color']));
         $limit = (int)$_POST['songkick_shortcode_number_of_events'];
         if ($limit > $max_number_events) $limit = $max_number_events;
         $options['shortcode_number_of_events'] = $limit;
@@ -105,12 +105,12 @@ function songkick_admin_settings() {
     echo '<p class="description">For more information, <a href="http://wordpress.org/extend/plugins/songkick-concerts-and-festivals/">check out the plugin’s page</a>.</p>';
 
     echo '<form method="post">';
-    echo wp_nonce_field('songkick_nonce');
+    echo wp_kses_post(wp_nonce_field('songkick_nonce'));
     echo '<h3>Default settings</h3>';
 
     echo '<table class="form-table">';
     echo '<tr><th><label for="songkick_apikey">' . 'Songkick API Key' . '</label></th>';
-    echo '<td><input id="songkick_apikey" name="songkick_apikey" type="text" value="'.$apikey.'" placeholder="Use default key" />';
+    echo '<td><input id="songkick_apikey" name="songkick_apikey" type="text" value="'.esc_attr($apikey).'" placeholder="Use default key" />';
     echo '<span class="description">Required';
     echo '<br>Please read through <a href="http://www.songkick.com/developer/api-terms-of-use">Songkick’s API terms of use</a>.';
     echo '<br>The default key is non-commercial. If you have a commercial website, <a href="http://developer.songkick.com">request another key from Songkick</a>. </span>';
@@ -123,7 +123,7 @@ function songkick_admin_settings() {
     echo '    <option value="venue" '.(($songkick_id_type == 'venue') ? ' selected' : '').'>venue id</option>';
     echo '    <option value="metro_area" '.(($songkick_id_type == 'metro_area') ? ' selected' : '').'>metro area id</option>';
     echo '  </select>';
-    echo '  <input size="15" id="songkick_id" name="songkick_id" type="text" value="'.$songkick_id.'" />';
+    echo '  <input size="15" id="songkick_id" name="songkick_id" type="text" value="'.esc_attr($songkick_id).'" />';
     echo '</td></tr>';
 
     echo '<tr><th><label for="songkick_attendance">' . 'Attendance' . '</label></th>';
@@ -136,21 +136,21 @@ function songkick_admin_settings() {
     echo '</td></tr>';
 
     echo '<tr><th><label for="songkick_gigography">Show past events (gigography)?</label></th>';
-    echo '<td><input id="songkick_gigography" name="songkick_gigography" type="checkbox" '.$gigography.' /> ';
+    echo '<td><input id="songkick_gigography" name="songkick_gigography" type="checkbox" '.wp_kses_post($gigography).' /> ';
     echo '<span class="description">For users and artists only</span>';
     echo '</td></tr>';
 
     echo '<tr><th><label for="songkick_number_of_events">Number of events to show</label></th>';
-    echo '<td><input id="songkick_number_of_events" name="songkick_number_of_events" type="text" value="'.$number_of_events.'" /> ';
+    echo '<td><input id="songkick_number_of_events" name="songkick_number_of_events" type="text" value="'.esc_attr($number_of_events).'" /> ';
     echo '<span class="description"> Max. 100</span>';
     echo '</td></tr>';
 
     echo '<tr><th><label for="songkick_hide_if_empty">Hide if there are no events?</label></th>';
-    echo '<td><input id="songkick_hide_if_empty" name="songkick_hide_if_empty" type="checkbox" '.$hide_if_empty.' /> ';
+    echo '<td><input id="songkick_hide_if_empty" name="songkick_hide_if_empty" type="checkbox" '.wp_kses_post($hide_if_empty).' /> ';
     echo '</td></tr>';
 
     echo '<tr><th><label for="songkick_disable_cache">Disable caching of API requests?</label></th>';
-    echo '<td><input id="songkick_disable_cache" name="songkick_disable_cache" type="checkbox" '.$disable_cache.' /> ';
+    echo '<td><input id="songkick_disable_cache" name="songkick_disable_cache" type="checkbox" '.wp_kses_post($disable_cache).' /> ';
     echo '<span class="description"> Warning: it will make your page load slower. Use with caution!</span>';
     echo '</td></tr>';
 
@@ -164,11 +164,11 @@ function songkick_admin_settings() {
     echo '</td></tr>';
 
     echo '<tr><th><label for="songkick_date_color">' . 'Background color for date:' . '</label></th>';
-    echo '<td><input id="songkick_date_color" name="songkick_date_color" type="text" value="'.$date_color.'" />';
+    echo '<td><input id="songkick_date_color" name="songkick_date_color" type="text" value="'.esc_attr($date_color).'" />';
     echo '</td></tr>';
 
     echo '<tr><th><label for="songkick_title">' . 'Widget title:' . '</label></th>';
-    echo '<td><input id="songkick_title" name="songkick_title" type="text" value="'.$title.'" />';
+    echo '<td><input id="songkick_title" name="songkick_title" type="text" value="'.esc_attr($title).'" />';
     echo '</td></tr>';
 
     echo '</table>';
@@ -184,7 +184,7 @@ function songkick_admin_settings() {
     echo '</td></tr>';
 
     echo '<tr><th><label for="songkick_shortcode_number_of_events">Number of events to show</label></th>';
-    echo '<td><input id="songkick_shortcode_number_of_events" name="songkick_shortcode_number_of_events" type="text" value="'.$shortcode_number_of_events.'" /> ';
+    echo '<td><input id="songkick_shortcode_number_of_events" name="songkick_shortcode_number_of_events" type="text" value="'.esc_attr($shortcode_number_of_events).'" /> ';
     echo '<span class="description"> Max. 100</span>';
     echo '</td></tr>';
     echo '<tr><th><label for="shortcode_songkick_logo">' . 'Songkick logo' . '</label></th>';
@@ -197,10 +197,10 @@ function songkick_admin_settings() {
     echo '</td></tr>';
 
     echo '<tr><th><label for="shortcode_songkick_date_color">' . 'Background color for date:' . '</label></th>';
-    echo '<td><input id="shortcode_songkick_date_color" name="shortcode_songkick_date_color" type="text" value="'.$shortcode_date_color.'" />';
+    echo '<td><input id="shortcode_songkick_date_color" name="shortcode_songkick_date_color" type="text" value="'.esc_attr($shortcode_date_color).'" />';
     echo '</td></tr>';
     echo '<tr><th><label for="songkick_show_pagination">Show pagination?</label></th>';
-    echo '<td><input id="songkick_show_pagination" name="songkick_show_pagination" type="checkbox" '.$show_pagination.' /> ';
+    echo '<td><input id="songkick_show_pagination" name="songkick_show_pagination" type="checkbox" '.wp_kses_post($show_pagination).' /> ';
     echo '</td></tr>';
 
     echo ' <tr><td colspan="2">Override shortcode settings: ';
