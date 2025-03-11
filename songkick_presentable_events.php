@@ -46,7 +46,7 @@ class SongkickPresentableEvents {
                 $this->songkick_events = new SongkickVenueEvents($apikey, $songkick_id);
                 break;
             default:
-                throw new Exception("Unknown songkick id type: $songkick_id_type");
+                throw new Exception(esc_html("Unknown songkick id type: $songkick_id_type"));
         }
 
         $results          = $this->songkick_events->get_events($this->page, $this->number_of_events);
@@ -61,11 +61,11 @@ class SongkickPresentableEvents {
     }
 
     function to_html() {
-        $profile_title = __('See all concerts', SONGKICK_TEXT_DOMAIN);
+        $profile_title = __('See all concerts', 'songkick-concerts-and-festivals');
 
         $str = '';
         if (empty($this->events)) {
-            $no_concerts_title = __('No upcoming concerts or festivals.', SONGKICK_TEXT_DOMAIN);
+            $no_concerts_title = __('No upcoming concerts or festivals.', 'songkick-concerts-and-festivals');
             $str .= '<p>'. htmlentities($no_concerts_title, ENT_QUOTES, SONGKICK_I18N_ENCODING). '</p>';
         } else {
             $str .= '<ul class="songkick-events">';
@@ -132,9 +132,9 @@ class SongkickPresentableEvents {
     }
 
     private function powered_by_songkick($logo) {
-        $text = __('Concerts by Songkick', SONGKICK_TEXT_DOMAIN);
+        $text = __('Concerts by Songkick', 'songkick-concerts-and-festivals');
         $html  = "<a class='powered-by' href='http://www.songkick.com/'>";
-        $html .= "<img src='".site_url('/wp-content/plugins/songkick-concerts-and-festivals/'.$logo)."' title='".htmlentities($text, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' alt='".htmlentities($text, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' /></a>";
+        $html .= "<img src='".plugins_url('/songkick-concerts-and-festivals/'.$logo)."' title='".htmlentities($text, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' alt='".htmlentities($text, ENT_QUOTES, SONGKICK_I18N_ENCODING)."' /></a>";
         return $html;
     }
 
