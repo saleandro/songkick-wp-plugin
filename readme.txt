@@ -3,7 +3,7 @@ Contributors: saleandro, coox
 Tags: songkick, concerts, events, festivals, widget
 WordPress Version: 5.2.1 or higher
 Tested up to: 6.7.2
-Stable tag: 0.10.0
+Stable tag: 0.10.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -168,3 +168,6 @@ See Songkick’s admin settings for details.
 
 = 0.10.0 =
 * Fix security vulnerability: 0.9.7 is vulnerable to Cross Site Request Forgery (CSRF) (https://patchstack.com/database/report-preview/3aa67cac-21ad-425b-84f3-4d807beee50b?pin=sp5DbxJaIgOqv7w3)
+
+= 0.10.1 =
+* Fix for security issues as flagged by Plugin Checker: escaping data correctly, using up-to-date methods, and adding nonce check to widget form
