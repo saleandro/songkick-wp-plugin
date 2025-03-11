@@ -92,7 +92,7 @@ function songkick_concerts_and_festivals_shortcode_handler($options = null) {
 
         if (!isset($options['show_pagination'])) $options['show_pagination'] = false;
         if ($options['show_pagination'] && isset($_GET['skp']))
-            $options['page'] = $_GET['skp'];
+            $options['page'] = wp_strip_all_tags(wp_unslash($_GET['skp']));
 
         $sk = new SongkickPresentableEvents($options);
         $str = '<div class="songkick-events">';
